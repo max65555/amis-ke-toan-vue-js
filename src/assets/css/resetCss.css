@@ -1,0 +1,19 @@
+:root{
+  --border-color:#e5e5e5;
+  --sidebar-color:#393a3d;
+}
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+	overflow: hidden;
+	font-family: roboto regular fonts;
+	margin: 0;
+}
+
+@font-face {
+	font-family: roboto regular fonts;
+	src: url(../font/Roboto/Roboto-Regular.ttf);
+}
+
