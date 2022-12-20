@@ -1,14 +1,14 @@
 <template>
-  <div class="container">
-    <main-sidebar></main-sidebar>
+  <div>
+    <main-container></main-container>
   </div>
 </template>
 <script>
-import MainSidebar from './components/layout/MainSidebar.vue';
+import MainContainer from './components/MainContainer.vue';
 export default {
   name: 'App',
   components: {
-    MainSidebar
+    MainContainer
   }
 }
 </script>
@@ -16,9 +16,4 @@ export default {
 <style scope>
 @import url(./assets/css/resetCss.css);
 @import url(./assets/css/base.css);
-  .container {
-  overflow-y: hidden;
-  display: flex;
-  }
-  
 </style>
