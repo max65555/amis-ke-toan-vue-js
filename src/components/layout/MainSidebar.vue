@@ -16,36 +16,17 @@
           </div>
         </div>
         <div class="sidebar__menu">
-          <!-- TODO: delete it -->
-          <!-- <div class="sidebar__menu-list">
-              <sidebar-menu-item menuName="Tổng quát" backgroundPosition="background-position:-30px -1628px" :ChangeBack="ChangeBack"></sidebar-menu-item>
-              <sidebar-menu-item menuName="Tiền mặt" backgroundPosition="background-position:-73px -1628px;"></sidebar-menu-item>
-              <sidebar-menu-item menuName="Tiền gửi" backgroundPosition="background-position:-117px -1628px;"></sidebar-menu-item>
-              <sidebar-menu-item menuName=" mua hàng" backgroundPosition="background-position:-161px -1628px;"></sidebar-menu-item>
-              <sidebar-menu-item menuName="Bán hàng" backgroundPosition="background-position:-204px -1628px"></sidebar-menu-item>
-              <sidebar-menu-item menuName=" Quản lý đơn hàng" backgroundPosition="background-position:-249px -1628px"></sidebar-menu-item>
-              <sidebar-menu-item menuName="Kho" backgroundPosition="background-position:-291px -1628px"></sidebar-menu-item> 
-              <sidebar-menu-item menuName="Công cụ dụng cụ" backgroundPosition="background-position:-336px -1628px"></sidebar-menu-item> 
-              <sidebar-menu-item menuName=" Tài sản cố định" backgroundPosition="background-position:-378px -1630px"></sidebar-menu-item> 
-              <sidebar-menu-item menuName="Tiền lương" backgroundPosition="background-position:-467px -1628px"></sidebar-menu-item> 
-              <sidebar-menu-item menuName="Thuế" backgroundPosition="background-position:-423px -1630px"></sidebar-menu-item> 
-              <sidebar-menu-item menuName="Giá Thành" backgroundPosition="background-position:-467px -1628px"></sidebar-menu-item> 
-              <sidebar-menu-item menuName="Ngân sách" backgroundPosition="background-position:-378px -1659px"></sidebar-menu-item> 
-              <sidebar-menu-item menuName="Báo cáo" backgroundPosition="background-position:-547px -1628px"></sidebar-menu-item> 
-              <sidebar-menu-item menuName=" Phân tích tài chính" backgroundPosition="background-position:-204px -1664px"></sidebar-menu-item> 
-              <sidebar-menu-item menuName=" Giá Thành" backgroundPosition="background-position:-467px -1628px"></sidebar-menu-item>
-          </div> -->
-            <button class="sidebar__menu--item" v-for="(item,key) in this.menuItems" :key="key">
-              <div class="sidebar__item--icon" :style="item.menuItemBackgroundPos" >
-              </div>
-              <div class="sidebar__item--label">
-                  <span class="sidebar__item--label-text">
-              {{ item.menuItemName }} 
-                  </span>
+          <router-link :to="item.link" class="sidebar__menu--item" v-for="(item,key) in this.menuItems" :key="key">
+            <div class="sidebar__item--icon" :style="item.menuItemBackgroundPos" >
+            </div>
+            <div class="sidebar__item--label">
+                <span class="sidebar__item--label-text">
+                  {{ item.menuItemName }} 
+                </span>
               </div>
               <div class="sidebar__item-tool-tip display_none"> {{ item.menuItemName }} 
               </div>
-          </button>
+            </router-link>
       </div>
     </div>
 </template>
@@ -65,55 +46,71 @@ export default {
         menuItems: [
           {
             menuItemName: "Tổng quát",
+            link:"/home",
             menuItemBackgroundPos: "background-position: -30px -1628px;",
           },
           {
             menuItemName: "Tiền mặt",
+            link:"/cash",
             menuItemBackgroundPos: "background-position: -73px -1628px;",
           },{
             menuItemName: "Tiền gửi",
+            link:"/monney",
             menuItemBackgroundPos: "background-position: -117px -1628px;",
           },{
             menuItemName: "Mua hàng",
+            link:"/buyandsell",
             menuItemBackgroundPos: "background-position: -161px -1628px;",
           },{
             menuItemName: "Bán hàng",
+            link:"/selling",
             menuItemBackgroundPos: "background-position: -204px -1628px;",
           },{
             menuItemName: "Quản lý đơn hàng",
+            link:"/cart",
             menuItemBackgroundPos: "background-position: -249px -1628px;",
           },{
             menuItemName: "Kho",
+            link:"/container",
             menuItemBackgroundPos: "background-position: -291px -1628px;",
           },{
             menuItemName: "Công cụ tìm kiếm",
+            link:"/searchtool",
             menuItemBackgroundPos: "background-position: -336px -1628px;",
           },{
             menuItemName: "Tài sản cố định",
+            link:"/asset",
             menuItemBackgroundPos: "background-position: -378px -1630px;",
           },{
             menuItemName: "Tiền lương",
+            link:"/salary",
             menuItemBackgroundPos: "background-position: -467px -1628px;",
           },{
             menuItemName: "Thuế",
+            link:"/tax",
             menuItemBackgroundPos: "background-position: -423px -1630px;",
           }
           ,{
             menuItemName: "Giá thành",
+            link:"/prize",
             menuItemBackgroundPos: "background-position: -467px -1628px;",
           },{
             menuItemName: "Ngân sách",
+            link:"/budget",
             menuItemBackgroundPos: "background-position: -378px -1659px;",
           },{
             menuItemName: "Báo cáo",
+            link:"/report",
             menuItemBackgroundPos: "background-position: -547px -1628px;",
           },{
             menuItemName: " Phân tích tài chính",
+            link:"/finance analys",
             menuItemBackgroundPos: "background-position: -204px -1664px;",
-          },{
+          }, {
             menuItemName: " Giá Thành",
+            link:"/prizes",
             menuItemBackgroundPos: "background-position: -467px -1628px;",
-          }
+          },
         ]  
       }
     }
@@ -124,13 +121,8 @@ export default {
 .sidebar {
   background-color: #393a3d;
   width: 200px;
-  /* min-height: 100vh; */
   height: 100vh;
-  /* max-height: 100vh; */
-  /* overflow: auto; */
   position: relative;
-  /* overflow-y: auto;
-	overflow-x:hidden; */
 }
 .sidebar__header {
   display: flex;
@@ -177,6 +169,7 @@ export default {
     padding: 0 14px;
     cursor: pointer;
     position: relative;
+    text-decoration: none;
   }
   .sidebar__menu-item-selected{
     box-sizing: border-box;
@@ -196,6 +189,7 @@ export default {
   .sidebar__item--label {
   }
   .sidebar__item--label-text {
+    text-decoration: none;
     user-select: none;
     color: white;
   }

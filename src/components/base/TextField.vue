@@ -1,0 +1,157 @@
+<template>
+  <div class="normal-text-field__input data-table__function-to-left">
+    <input class="normal-text-field__input--text searching-text-field" type="text"
+        style="width: 260px;" placeholder="Tìm theo mã, Tên nhân viên">
+    <div class="normal-text-field__icon--result">
+        <div class="normal-text-field__icon--icon data-table__search-icon"></div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  name:"TextField",
+}
+</script>
+
+<style scoped>
+  .textfield {
+    margin: 12px;
+    /* max-width: 260px; */
+  }
+  .text-field__normal {
+    width: 100%;
+    cursor: pointer;
+    margin-bottom: 0;
+  }
+  .normal-text-field__label {
+    /* width: 41px;
+    height: 11px; */
+    display: block;
+    margin-bottom: 8px;
+    width: auto;
+  }
+  .normal-text-field__label--text {
+    font-size: 14px;
+    font-weight: 500;
+    color: #1f1f1f;
+    width: auto;
+    position: relative;
+  }
+  .text-label__tooltip{
+    /* top:12px !important;  */
+  }
+  .normal-text-field__input {
+    position: relative;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .normal-text-field__input--text {
+    position: absolute;
+    top: 0;
+    box-sizing: border-box;
+    border-radius: 4px;
+    /* width: 260px; */
+    width: 100%;
+    height: 36px;
+    text-align: left;
+    font-size: 14px;
+    /* margin: 0; */
+    padding-left: 12px;
+    padding-right: 20px + 4px;
+    border: 1px solid #ebebeb;
+    outline: unset;
+  }
+  .normal-text-field__icon--result {
+    width: 20px;
+    height: 20px;
+    padding: 8px;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  .normal-text-field__icon--icon {
+    font-size: 20px;
+  }
+  .normal-text-field__respond--text {
+    /* position: absolute;
+    top: 0; */
+    display: block;
+    text-align: left;
+    padding-top: 8px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #e61d1d;
+    white-space: nowrap;
+  }
+  .normal-text-field__icon--result {
+    position: absolute;
+    right: 0;
+    /* top: 0; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .normal-text-field__icon--icon {
+    color: #50b83c;
+  }
+  /* search bar */
+  .normal-text-field__icon--search {
+    width: 20px;
+    height: 20px;
+    padding: 8px;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    border-radius: 0px 3px 3px 0px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ebebeb;
+    /* box-sizing: border-box; */
+  }
+  .normal-text-search-icon--icon {
+    color: #666666;
+    font-size: 12px;
+  }
+  /* status  */
+  .text-field__normal:hover input.normal-text-field__input--text {
+    /* background-color: #f6f6f6; */
+  }
+  /* .normal-text-field__input--text:focus {
+    border-color: #50b83c;
+  } */
+  .normal-text-field__respond {
+    height: 8px;
+    /* overflow: hidden; */
+  }
+  .normal-text-field--disable .normal-text-field__input--text {
+    background-color: #ebebeb;
+    cursor: pointer;
+    color: #666666;
+  }
+  .text-being-required {
+    color: red;
+  }
+
+  .text-field--disable{
+    background-color:#EBEBEB ;
+    border-color: #E0E0E0;
+    color:#666666;
+
+  }
+  .data-table__function-to-left {
+  /* align-items: center; */
+  padding-bottom: 8px;
+  justify-content: flex-end;
+  width: 100%;
+  margin-right: 5px;
+}
+.data-table__search-icon {
+  width: 24px;
+  height: 24px;
+  background: url(../../assets/images/icon.svg) no-repeat -992px -355px;
+}
+</style>

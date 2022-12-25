@@ -1,25 +1,26 @@
-:root{
-  --border-color:#e5e5e5;
-  --sidebar-color:#393a3d;
+:root {
+    --border-color: #e5e5e5;
+    --sidebar-color: #393a3d;
 }
 * {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
 }
-button{
-	background-color: transparent;
-	border:unset;
-	width: 100%;
+button {
+    background-color: transparent;
+    border: unset;
+    width: 100%;
+    height: 100%;
 }
 
 body {
-	overflow: hidden;
-	font-family: roboto regular fonts;
-	margin: 0;
+    overflow: hidden;
+    font-family: roboto regular fonts;
+    margin: 0;
 }
 
 @font-face {
-	font-family: roboto regular fonts;
-	src: url(../font/Roboto/Roboto-Regular.ttf);
+    font-family: roboto regular fonts;
+    src: url(../font/Roboto/Roboto-Regular.ttf);
 }
-

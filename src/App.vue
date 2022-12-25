@@ -1,19 +1,21 @@
 <template>
-  <div>
-    <main-container></main-container>
-  </div>
+    <div>
+        <main-container></main-container>
+    </div>
 </template>
 <script>
-import MainContainer from './components/MainContainer.vue';
+import MainContainer from './components/MainContainer.vue'
+
 export default {
-  name: 'App',
-  components: {
-    MainContainer
-  }
+    name: 'App',
+    components: {
+        MainContainer,
+    },
 }
 </script>
 
 <style scope>
 @import url(./assets/css/resetCss.css);
 @import url(./assets/css/base.css);
+@import url(../src/assets/icon/icofont/icofont.min.css);
 </style>
