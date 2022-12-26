@@ -5,7 +5,11 @@
                 <div class="employee-addition__header">
                     <div class="employee-addition__header-left">
                         <span class="addition__header--title">
-                            Thêm Mới Nhân Viên
+                            {{
+                                !this.isUpdate
+                                    ? 'Thêm Mới Nhân Viên'
+                                    : 'Thay Đổi Thông Tin'
+                            }}
                         </span>
                         <div class="addition__header--select-position">
                             <div class="selection-position">
@@ -1371,6 +1375,8 @@
         v-show="this.popUpNotify.isShowingUpPopUp"
         :notifyMessage="this.popUpNotify.notifyMessage"
         :typeNotify="this.popUpNotify.typeNotify"
+        :semiButtonAction="this.closePopUpEvent"
+        :mainButtonAction="this.closePopUpEvent"
     ></popup-notify>
 </template>
 
@@ -1414,8 +1420,21 @@ export default {
             Departments: [],
         }
     },
+    props: {
+        isUpdate: {
+            type: Boolean,
+            required: true,
+        },
+        EmployeeBeUpdated: {
+            type: Object,
+            required: false,
+        },
+    },
+
     created() {
         this.loadAllDepartment()
+        this.Employee = this.EmployeeBeUpdated
+        console.log(this.Employee)
     },
     updated() {
         // this.validateValue()
@@ -1433,10 +1452,13 @@ export default {
          * Author: Toanlk (25/12/2022)
          */
         btnSaveTheEmployee: function () {
-            console.log('test1')
             //validate
             if (this.validateValue()) {
-                this.addNewEmployee(this.Employee)
+                if (this.isUpdate) {
+                    this.updateEmployee(this.Employee)
+                } else {
+                    this.addNewEmployee(this.Employee)
+                }
             }
         },
         /**
@@ -1475,7 +1497,28 @@ export default {
             axios
                 .post('https://amis.manhnv.net/api/v1/Employees', employee)
                 .then((res) => {
-                    this.PopUpHandler(true, res)
+                    this.PopUpHandler(true, res, 'Thêm mới thành công')
+                })
+                .catch((err) => {
+                    console.log('err')
+                    this.PopUpHandler(false, err)
+                })
+        },
+        /**
+         * push changes to api
+         * Author: Toanlk (25/12/2022)
+         */
+        updateEmployee(employee) {
+            console.log(this.EmployeeBeUpdated.EmployeeId)
+            console.log(employee)
+            axios
+                .put(
+                    'https://amis.manhnv.net/api/v1/Employees/' +
+                        this.EmployeeBeUpdated.EmployeeId,
+                    employee
+                )
+                .then((res) => {
+                    this.PopUpHandler(true, res, 'Thay đổi thành công')
                 })
                 .catch((err) => {
                     console.log('err')
@@ -1484,10 +1527,11 @@ export default {
         },
         /**
          * pop up handler
+         * Author: Toanlk (25/12/2022)
          */
-        PopUpHandler(isSuccess, res) {
+        PopUpHandler(isSuccess, res, successMessage) {
             this.popUpNotify.notifyMessage = isSuccess
-                ? 'Thêm mới thành công '
+                ? successMessage
                 : res.response.data.devMsg
             this.popUpNotify.typeNotify = isSuccess ? 'success' : 'error'
             this.popUpNotify.isShowingUpPopUp = true
@@ -1507,15 +1551,25 @@ export default {
                 .catch((err) => {
                     console.log(err)
                 })
-            console.log(this.Departments)
         },
+        /**
+         * show dropdownlist
+         * Author: Toanlk (25/12/2022)
+         */
         ShowAndHideDropDownList() {
             this.isDepartmentComboBoxOpen = true
         },
+        /**
+         * selected department Action of user handler
+         * Author: Toanlk (25/12/2022)
+         */
         SelectedDepartmentElement(departmentItem) {
             this.selectedDepartment = departmentItem
             this.Employee.DepartmentId = this.selectedDepartment.DepartmentId
             this.isDepartmentComboBoxOpen = false
+        },
+        closePopUpEvent() {
+            this.popUpNotify.isShowingUpPopUp = false
         },
     },
 }

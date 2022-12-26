@@ -15,15 +15,11 @@
                 </div>
                 <div class="popup-response__divide-line"></div>
                 <div class="popup-response__button">
-                    <button class="button__semi btn button__closePopup">
-                        <span class="button__text">Đóng</span>
-                    </button>
-                    <button
-                        class="button__main btn popup-response__button-confirm--button"
-                        onClick="deleteAnEmployee()"
-                    >
-                        <span class="button__text">Xác Nhận</span>
-                    </button>
+                    <semi-button name="Đóng" :eventButton="semiButtonAction" />
+                    <main-button
+                        name="Xác nhận"
+                        :eventButton="mainButtonAction"
+                    />
                 </div>
             </div>
         </div>
@@ -41,6 +37,14 @@ export default {
         notifyMessage: {
             type: String,
             required: true,
+        },
+        semiButtonAction: {
+            type: Function,
+            required: false,
+        },
+        mainButtonAction: {
+            type: Function,
+            required: false,
         },
     },
     beforeUpdate() {

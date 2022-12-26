@@ -17,14 +17,16 @@
                                 <!-- TODO: add semi button -->
                                 <semi-button
                                     name="xóa"
-                                    eventButton=""
+                                    :eventButton="this.DeleteEmployees"
                                 ></semi-button>
                             </div>
                         </div>
                         <!-- TODO:search text field -->
                         <text-field></text-field>
                         <div class="table__function-reload">
-                            <div class="table-function-reload--icon"></div>
+                            <button @click="this.loadAllEmployee()">
+                                <div class="table-function-reload--icon"></div>
+                            </button>
                         </div>
                     </div>
                     <div class="main-content__data-table-context-wrapper">
@@ -44,6 +46,10 @@
                                                         id="data-table__all-check"
                                                         type="checkbox"
                                                         class="checkbox__input-checkbox"
+                                                        v-model="
+                                                            this
+                                                                .isAllCheckChecked
+                                                        "
                                                     />
                                                     <label
                                                         for="data-table__all-check"
@@ -137,6 +143,7 @@
                                         v-for="(employee, key) in this
                                             .employeeArray"
                                         :key="key"
+                                        v-show="!this.isLoadingProcess"
                                     >
                                         <td
                                             class="data-table__data-line data-table__header--checkbox"
@@ -149,6 +156,13 @@
                                                         id="{{employee.EmployeeId}}"
                                                         type="checkbox"
                                                         class="checkbox__input-checkbox data-table__header--input-checkbox"
+                                                        :value="
+                                                            employee.EmployeeId
+                                                        "
+                                                        v-model="
+                                                            this
+                                                                .deleteEmployeesCollection
+                                                        "
                                                     />
                                                     <label
                                                         for="{{employee.EmployeeId}}"
@@ -189,7 +203,11 @@
                                                 class="data-table__data-item"
                                                 style="justify-content: center"
                                             >
-                                                {{ employee.DateOfBirth }}
+                                                {{
+                                                    this.dateTimeFormatter(
+                                                        employee.DateOfBirth
+                                                    )
+                                                }}
                                             </div>
                                         </td>
                                         <td class="data-table__data-line">
@@ -242,22 +260,43 @@
                                             >
                                                 <div
                                                     class="button button__link"
+                                                    style="
+                                                        display: flex;
+                                                        align-items: center;
+                                                    "
                                                 >
-                                                    <a
-                                                        onClick="updateEmployeeButton('{{employee.EmployeeId}}')"
+                                                    <button
+                                                        @click="
+                                                            this.UpdateButtonHandler(
+                                                                employee
+                                                            )
+                                                        "
                                                         class="button__link--text data-table__button-edit"
-                                                        >Sửa</a
                                                     >
+                                                        Sửa
+                                                    </button>
                                                     <div
                                                         class="data-table__button-dropdown-edit"
                                                         id="functional__dropdown-btn"
                                                     >
-                                                        <i
-                                                            class="icofont-rounded-down dropdown__i--icon"
-                                                        ></i>
+                                                        <button
+                                                            @click="
+                                                                this.ShowDropDownList(
+                                                                    employee.EmployeeId
+                                                                )
+                                                            "
+                                                        >
+                                                            <i
+                                                                class="icofont-rounded-down dropdown__i--icon"
+                                                            ></i>
+                                                        </button>
                                                         <div
-                                                            style="
-                                                                display: none;
+                                                            v-if="
+                                                                this
+                                                                    .dropdownListOpen &&
+                                                                this
+                                                                    .currentRowDropDownListOpen ==
+                                                                    employee.EmployeeId
                                                             "
                                                             class="dropdown-list__list data-table__button-select-function"
                                                         >
@@ -279,7 +318,11 @@
                                                             >
                                                                 <button
                                                                     class="reset-css-button"
-                                                                    onClick="deleteConfirmAction('{{employee.EmployeeId}}'),false"
+                                                                    @click="
+                                                                        DeleteConfirmAction(
+                                                                            employee.EmployeeId
+                                                                        )
+                                                                    "
                                                                 >
                                                                     <span
                                                                         class="dropdown-list__list-item-text"
@@ -308,8 +351,215 @@
                                             </div>
                                         </td>
                                     </tr>
+
+                                    <!-- processload fake data -->
+                                    <tbody  v-show="this.employeeArray.length == 0">
+<tr
+                                        class="data-table__line"
+                                       
+                                        v-for="index in 20"
+                                        :key="index"
+                                    >
+                                        <td
+                                            class="data-table__data-line data-table__header--checkbox"
+                                        >
+                                            <div class="data-table__data-item">
+                                                <div
+                                                    class="checkbox__container"
+                                                >
+                                                    <input
+                                                        id="${employee.EmployeeId}"
+                                                        type="checkbox"
+                                                        class="checkbox__input-checkbox data-table__header--input-checkbox"
+                                                    />
+                                                    <label
+                                                        for="${employee.EmployeeId}"
+                                                        class="checkbox__label"
+                                                    >
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="data-table__data-line">
+                                            <div class="data-table__data-item">
+                                                <div
+                                                    class="data-table__header-with-pic"
+                                                >
+                                                    <span
+                                                        class="data-table__header--text"
+                                                    >
+                                                        ${employee.EmployeeCode}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="data-table__data-line">
+                                            <div class="data-table__data-item">
+                                                <span
+                                                    class="data-table__header--text"
+                                                >
+                                                    ${employee.EmployeeCode}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td class="data-table__data-line">
+                                            <div class="data-table__data-item">
+                                                <span
+                                                    class="data-table__header--text"
+                                                >
+                                                    ${employee.EmployeeCode}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td class="data-table__data-line">
+                                            <div class="data-table__data-item">
+                                                <span
+                                                    class="data-table__header--text"
+                                                >
+                                                    ${employee.EmployeeCode}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td class="data-table__data-line">
+                                            <div class="data-table__data-item">
+                                                <span
+                                                    class="data-table__header--text"
+                                                >
+                                                    ${employee.EmployeeCode}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td class="data-table__data-line">
+                                            <div class="data-table__data-item">
+                                                <span
+                                                    class="data-table__header--text"
+                                                >
+                                                    ${employee.EmployeeCode}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td class="data-table__data-line">
+                                            <div class="data-table__data-item">
+                                                <span
+                                                    class="data-table__header--text"
+                                                >
+                                                    ${employee.EmployeeCode}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td class="data-table__data-line">
+                                            <div class="data-table__data-item">
+                                                <span
+                                                    class="data-table__header--text"
+                                                >
+                                                    ${employee.EmployeeCode}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td class="data-table__data-line">
+                                            <div class="data-table__data-item">
+                                                <span
+                                                    class="data-table__header--text"
+                                                >
+                                                    ${employee.EmployeeCode}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td
+                                            class="data-table__data-line main-content__function_placeholder"
+                                        >
+                                            <div class="data-table__data-item">
+                                                <span
+                                                    class="data-table__header--text"
+                                                >
+                                                    ${employee.EmployeeCode}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td
+                                            class="data-table__data-line main-content__function"
+                                        >
+                                            <div
+                                                class="data-table__data-item"
+                                                style="
+                                                    border-left: 1px solid
+                                                        #e0e0e0;
+                                                "
+                                            >
+                                                <div
+                                                    class="button button__link"
+                                                >
+                                                    <a
+                                                        onClick="updateEmployeeButton('${employee.EmployeeId}')"
+                                                        class="button__link--text data-table__button-edit"
+                                                        >Sửa</a
+                                                    >
+                                                    <div
+                                                        class="data-table__button-dropdown-edit"
+                                                        id="functional__dropdown-btn"
+                                                    >
+                                                        <i
+                                                            class="icofont-rounded-down dropdown__i--icon"
+                                                        ></i>
+                                                        <div
+                                                            style="
+                                                                display: none;
+                                                            "
+                                                            class="dropdown-list__list data-table__button-select-function"
+                                                        >
+                                                            <div
+                                                                class="dropdown-list__list-item"
+                                                            >
+                                                                <span
+                                                                    class="dropdown-list__list-item-text"
+                                                                >
+                                                                    Nhân Bản
+                                                                </span>
+                                                            </div>
+                                                            <div
+                                                                class="dropdown-list__list-item"
+                                                            >
+                                                                <span
+                                                                    class="dropdown-list__list-item-text"
+                                                                >
+                                                                    Xóa
+                                                                </span>
+                                                            </div>
+                                                            <div
+                                                                class="dropdown-list__list-item"
+                                                            >
+                                                                <span
+                                                                    class="dropdown-list__list-item-text"
+                                                                >
+                                                                    Ngừng sử
+                                                                    dụng
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                    
                                 </tbody>
+                                <!-- processload fake data -->
                             </table>
+                            <popup-notify
+                                v-show="this.ispopupConfirmDeleteShow"
+                                :notifyMessage="this.notifyMessage"
+                                :typeNotify="this.typeNotify"
+                                :semiButtonAction="
+                                    this.cancelDeleteConfirmAction
+                                "
+                                :mainButtonAction="
+                                    this.isDeleteEmployeesAction
+                                        ? this
+                                              .confirmDeleteEmployeesConfirmAction
+                                        : this.confirmDeleteConfirmAction
+                                "
+                            ></popup-notify>
                             <div class="data-table__footer-container">
                                 <div>
                                     <div class="data-table__footer">
@@ -431,6 +681,8 @@
     <add-new-employee
         v-if="this.isAddNewEmployeeShowingUp"
         @onClose="ShowAddNewEmployeeForm"
+        :isUpdate="this.isUpdateForm"
+        :EmployeeBeUpdated="this.updateEmployee"
     ></add-new-employee>
 </template>
 
@@ -446,8 +698,19 @@ export default {
         return {
             employeeArray: [],
             isAddNewEmployeeShowingUp: false,
+            isUpdateForm: false,
+            updateEmployee: {},
+            isLoadingProcess: false,
+            dropdownListOpen: false,
+            ispopupConfirmDeleteShow: false,
+            notifyMessage: '',
+            typeNotify: '',
+            deleteEmployeesCollection: [],
+            isDeleteEmployeesAction: false,
+            isAllCheckChecked: false,
         }
     },
+
     methods: {
         /**
          * load and render all employee to data table using axios
@@ -455,29 +718,132 @@ export default {
          */
         loadAllEmployee: function () {
             try {
+                this.employeeArray =[];
                 axios
                     .get('https://amis.manhnv.net/api/v1/Employees')
                     .then((res) => {
                         this.employeeArray = res.data
+                        console.log('reload data')
                     })
                     .catch((er) => {
                         //TODO: fail to work with api hanlder is here
                         console.log(er)
                     })
-            } catch (e) {}
+            } catch (e) {
+                console.log(e)
+            }
         },
         /**
          * buton handler showing up add new employee form
          * Author: toanlk(25/12/2022)
          */
         ShowAddNewEmployeeForm: function () {
-            console.log('test')
+            this.isUpdateForm = false
             this.isAddNewEmployeeShowingUp = !this.isAddNewEmployeeShowingUp
         },
         /**
-         * close add an new employee form
+         * update button handler
          * Author: Toanlk(25/12/2022)
          */
+        UpdateButtonHandler(employee) {
+            this.isUpdateForm = true
+            this.updateEmployee = employee
+            this.isAddNewEmployeeShowingUp = true
+        },
+        /**
+         * show dropdownlist handler
+         * Author: Toanlk(25/12/2022)
+         */
+        ShowDropDownList(employeeID) {
+            this.dropdownListOpen = true
+            this.currentRowDropDownListOpen = employeeID
+        },
+        /**
+         * processLoading data animation
+         * Author: Toanlk(25/12/2022)
+         */
+        ProcessLoadingData() {},
+        /**
+         * delete an employee action
+         * Author: Toanlk(25/12/2022)
+         */
+        DeleteConfirmAction(employedId) {
+            this.isDeleteEmployeesAction = false
+            this.dropdownListOpen = false
+            this.notifyMessage = 'Bạn có chắc chắn muốn xóa không ?'
+            this.typeNotify = 'question'
+            this.ispopupConfirmDeleteShow = true
+        },
+        /**
+         * close pop up confirm delete
+         * Author: Toanlk(25/12/2022)
+         */
+        cancelDeleteConfirmAction() {
+            this.ispopupConfirmDeleteShow = false
+        },
+        /**
+         * confirm delete an employe action
+         * Author: Toanlk(25/12/2022)
+         */
+        confirmDeleteConfirmAction() {
+            this.ispopupConfirmDeleteShow = false
+            console.log('delete action' + this.currentRowDropDownListOpen)
+            axios
+                .delete(
+                    'https://amis.manhnv.net/api/v1/Employees/' +
+                        this.currentRowDropDownListOpen
+                )
+                .then((res) => {
+                    this.loadAllEmployee()
+                })
+                .catch((err) => {
+                    console.log('error')
+                })
+        },
+        /**
+         * delete employees action
+         * Author: Toanlk(25/12/2022)
+         */
+        DeleteEmployees() {
+            console.log(this.deleteEmployeesCollection)
+            this.isDeleteEmployeesAction = true
+            this.notifyMessage = 'Bạn có chắc chắn muốn xóa không ?'
+            this.typeNotify = 'question'
+            this.ispopupConfirmDeleteShow = true
+        },
+        /**
+         * confirm delete employees action
+         * Author: Toanlk(25/12/2022)
+         */
+        confirmDeleteEmployeesConfirmAction() {
+            console.log('xoa hang loat')
+            this.ispopupConfirmDeleteShow = false
+            this.deleteEmployeesCollection.forEach((item) => {
+                axios
+                    .delete('https://amis.manhnv.net/api/v1/Employees/' + item)
+                    .then((res) => {
+                        this.loadAllEmployee()
+                        console.log(res)
+                    })
+                    .catch((err) => {
+                        console.log('error')
+                    })
+            })
+        },
+        /**
+         * date Formatter
+         * Author: toanlk(25/12/2022)
+         * @param {*} date
+         */
+        dateTimeFormatter(date) {
+            date += ''
+            if (date == 'null') {
+                return ''
+            }
+            let result = date.slice(0, 10)
+            return result
+        },
+
     },
     created() {
         //render all employee
@@ -573,8 +939,8 @@ th {
     /* box-sizing: border-box; */
 }
 .main-content__function {
-    position: sticky;
-    right: 0;
+    /* position: sticky; */
+    /* right: 0; */
     display: flex;
     /* right: 0; */
     /* display: table-cell; */
@@ -804,5 +1170,196 @@ data-table__data-item	height: 100%; */
 }
 .data-table__selected-row {
     background-color: #f1ffef;
+}
+/* data table */
+
+.dropdown-list {
+    width: 100%;
+    position: relative;
+}
+.dropdown__label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: left;
+    color: #1f1f1f;
+    margin-bottom: 8px;
+}
+.dropwdown__input {
+    width: 100%;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #ffffff;
+    border-radius: 3px;
+    box-sizing: border;
+    border: 1px solid #50b83c;
+    border: 1px solid #e0e0e0;
+    z-index: 1;
+}
+.dropdown__input--normal {
+    border: 1px solid #e0e0e0;
+}
+.dropdown__input-text {
+    white-space: nowrap;
+    overflow: hidden;
+    max-width: 140px;
+    padding-left: 12px;
+    font-size: 14px;
+    padding: 12px;
+    font-weight: 400;
+    color: #9e9e9e;
+    text-align: left;
+}
+.dropdown__input-icon {
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+.dropdown__i--close-icon {
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+    color: gray;
+    margin-left: 8px;
+}
+.data-table__button-dropdown-edit {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+.dropdown__i--icon {
+    display: block;
+    width: 16px;
+    height: 100%;
+    height: 36px;
+    font-size: 16px;
+    line-height: 2.2;
+    padding: 0 8px 0px 8px;
+}
+.dropdown__text--error {
+    margin-top: 8px;
+}
+.dropdown__span--error {
+    font-size: 12px;
+    text-align: left;
+    color: #e61d1d;
+    font-weight: 400;
+}
+/* dropdown-list the List */
+.dropdown-list__list {
+    overflow-y: overlay;
+    overflow-x: hidden;
+    white-space: nowrap;
+    position: absolute;
+    /* top: 36; */
+    /* width: 100%; */
+    max-height: 200px;
+    border-radius: 4px;
+    box-shadow: 0px 4px 16px #171b2a3d;
+    z-index: 1000;
+    background-color: white;
+}
+.dropdown-list__list-item {
+    height: 36px;
+    display: flex;
+    align-items: center;
+    margin: 8px;
+    border-radius: 4px;
+    padding-left: 8px;
+}
+.dropdown-list__list-item:hover {
+    background-color: #50b83c1a;
+    cursor: pointer;
+}
+.dropdown-list__list-item-text {
+    font-size: 14px;
+    text-align: left;
+    color: #1f1f1f;
+    font-weight: 400;
+    user-select: none;
+}
+.dropdown__input-icon:hover {
+    background-color: #e0e0e0;
+}
+/* status */
+.dropdown-list__normal-status {
+    border: 1px solid #e6e6e6;
+}
+/* dropw downlist */
+.data-table__footer-container {
+    height: 48px;
+    /* top: 0; */
+    right: 0;
+    left: 0;
+    position: absolute;
+    bottom: calc(48px / -4);
+}
+.data-table__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 16px;
+}
+.data-table__footer--left {
+    display: flex;
+    align-items: center;
+}
+.data-table__footer--right {
+    display: flex;
+    align-items: center;
+}
+.data-table__footer--mount-of-line {
+}
+.data-table__footer--page {
+    display: flex;
+    align-items: center;
+    margin: 0 16px;
+}
+.data-table__footer--prev-next {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.data-table__footer-nav-icon {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.data-table__footer-nav-rounded-left {
+    font-size: 20px;
+}
+.data-table__footer-nav-rounded-right {
+    font-size: 20px;
+}
+/* end footer */
+.main-content__table-footer-pages-selected {
+    margin-right: 28px;
+}
+.main-content__footer-nav-pages {
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    justify-self: center;
+}
+.main-content__footer-nav-pages--item {
+    padding: 0 6px;
+    /* border: 1px solid #e0e0e0; */
+    /* margin: 0 4px; */
+}
+.main-content__footer-nav-selected-page {
+    border: 1px solid #e0e0e0;
+}
+.show-pages-list {
+    bottom: calc(100% + 1px);
+}
+.data-table__header--text {
+    background-color: #e0e0e0;
+    color: #e0e0e0;
+    padding: 4px 0;
 }
 </style>

@@ -5,11 +5,7 @@
 <script>
 export default {
     name: 'MainContent',
-    methods: {
-        Logger() {
-            console.log('test1')
-        },
-    },
+    methods: {},
 }
 </script>
 
