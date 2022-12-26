@@ -86,19 +86,6 @@
                                         ></i>
                                     </div>
                                 </div>
-                                <span
-                                    v-show="!this.requiredField.isCodeEmpty"
-                                    style="visibility: hidden"
-                                    class="normal-text-field__respond--text"
-                                >
-                                    Tên trường không được để trống
-                                </span>
-                                <span
-                                    v-show="this.requiredField.isCodeEmpty"
-                                    class="normal-text-field__respond--text"
-                                >
-                                    Tên trường không được để trống
-                                </span>
                             </div>
                             <div class="textfield text-field__normal">
                                 <div class="normal-text-field__label">
@@ -131,19 +118,6 @@
                                         ></i>
                                     </div>
                                 </div>
-                                <span
-                                    v-show="!this.requiredField.isNameEmpty"
-                                    style="visibility: hidden"
-                                    class="normal-text-field__respond--text"
-                                >
-                                    Tên trường không được để trống
-                                </span>
-                                <span
-                                    v-show="this.requiredField.isNameEmpty"
-                                    class="normal-text-field__respond--text"
-                                >
-                                    Tên trường không được để trống
-                                </span>
                             </div>
                         </div>
                         <div class="employee-addition__left-second">
@@ -718,7 +692,7 @@
                                     >
                                         Số CMND
                                         <div
-                                            class="sidebar__item-tool-tip display_none text-label__tooltip"
+                                            class="sidebar__item-tool-tip text-label__tooltip"
                                         >
                                             số chứng minh thư nhân dân
                                         </div>
@@ -1068,7 +1042,7 @@
                         <div style="display: flex">
                             <div
                                 class="textfield text-field__normal pd-2"
-                                style="margin-top: 24px"
+                                style="margin-top: 22px"
                             >
                                 <div class="normal-text-field__label">
                                     <span
@@ -1432,9 +1406,13 @@ export default {
     },
 
     created() {
-        this.loadAllDepartment()
-        this.Employee = this.EmployeeBeUpdated
-        console.log(this.Employee)
+        try {
+            this.loadAllDepartment()
+            this.Employee = this.EmployeeBeUpdated
+            console.log(this.Employee)
+        } catch (e) {
+            console.log(e)
+        }
     },
     updated() {
         // this.validateValue()
@@ -1445,20 +1423,28 @@ export default {
          * Author: Toanlk (25/12/2022)
          */
         closeThisForm: function () {
-            this.$emit('onClose')
+            try {
+                this.$emit('onClose')
+            } catch (e) {
+                console.log(e)
+            }
         },
         /**
          * button save the employee handler
          * Author: Toanlk (25/12/2022)
          */
         btnSaveTheEmployee: function () {
-            //validate
-            if (this.validateValue()) {
-                if (this.isUpdate) {
-                    this.updateEmployee(this.Employee)
-                } else {
-                    this.addNewEmployee(this.Employee)
+            try {
+                //validate
+                if (this.validateValue()) {
+                    if (this.isUpdate) {
+                        this.updateEmployee(this.Employee)
+                    } else {
+                        this.addNewEmployee(this.Employee)
+                    }
                 }
+            } catch (e) {
+                console.log(e)
             }
         },
         /**
@@ -1466,110 +1452,143 @@ export default {
          * Author: toanlk(25/12/2022)
          */
         validateValue() {
-            // let listOfError = []
-            if (this.Employee.EmployeeCode == '') {
-                this.requiredField.isCodeEmpty = true
-            } else if (this.Employee.EmployeeCode != '') {
-                this.requiredField.isCodeEmpty = false
+            try {
+                // let listOfError = []
+                if (this.Employee.EmployeeCode == '') {
+                    this.requiredField.isCodeEmpty = true
+                } else if (this.Employee.EmployeeCode != '') {
+                    this.requiredField.isCodeEmpty = false
+                }
+                if (this.Employee.EmployeeName == '') {
+                    this.requiredField.isNameEmpty = true
+                } else if (this.Employee.EmployeeName != '') {
+                    this.requiredField.isNameEmpty = false
+                }
+                if (
+                    this.requiredField.isNameEmpty == false &&
+                    this.requiredField.isCodeEmpty == false
+                ) {
+                    return true
+                }
+                return false
+                // TODO: turn on this
+                // if(this.Employee.DepartmentId == ''){
+                //     this.requiredField.isDepartmentEmpty = true;
+                // }
+            } catch (e) {
+                console.log(e)
             }
-            if (this.Employee.EmployeeName == '') {
-                this.requiredField.isNameEmpty = true
-            } else if (this.Employee.EmployeeName != '') {
-                this.requiredField.isNameEmpty = false
-            }
-            if (
-                this.requiredField.isNameEmpty == false &&
-                this.requiredField.isCodeEmpty == false
-            ) {
-                return true
-            }
-            return false
-            // TODO: turn on this
-            // if(this.Employee.DepartmentId == ''){
-            //     this.requiredField.isDepartmentEmpty = true;
-            // }
         },
         /**
          * push an new employee to database with api;
          * Author: Toanlk(25/12/2022)
          */
         addNewEmployee(employee) {
-            axios
-                .post('https://amis.manhnv.net/api/v1/Employees', employee)
-                .then((res) => {
-                    this.PopUpHandler(true, res, 'Thêm mới thành công')
-                })
-                .catch((err) => {
-                    console.log('err')
-                    this.PopUpHandler(false, err)
-                })
+            try {
+                axios
+                    .post('https://amis.manhnv.net/api/v1/Employees', employee)
+                    .then((res) => {
+                        this.PopUpHandler(true, res, 'Thêm mới thành công')
+                    })
+                    .catch((err) => {
+                        console.log('err')
+                        this.PopUpHandler(false, err)
+                    })
+            } catch (e) {
+                console.log(e)
+            }
         },
         /**
          * push changes to api
          * Author: Toanlk (25/12/2022)
          */
         updateEmployee(employee) {
-            console.log(this.EmployeeBeUpdated.EmployeeId)
-            console.log(employee)
-            axios
-                .put(
-                    'https://amis.manhnv.net/api/v1/Employees/' +
-                        this.EmployeeBeUpdated.EmployeeId,
-                    employee
-                )
-                .then((res) => {
-                    this.PopUpHandler(true, res, 'Thay đổi thành công')
-                })
-                .catch((err) => {
-                    console.log('err')
-                    this.PopUpHandler(false, err)
-                })
+            try {
+                console.log(this.EmployeeBeUpdated.EmployeeId)
+                console.log(employee)
+                axios
+                    .put(
+                        'https://amis.manhnv.net/api/v1/Employees/' +
+                            this.EmployeeBeUpdated.EmployeeId,
+                        employee
+                    )
+                    .then((res) => {
+                        this.PopUpHandler(true, res, 'Thay đổi thành công')
+                    })
+                    .catch((err) => {
+                        console.log('err')
+                        this.PopUpHandler(false, err)
+                    })
+            } catch (e) {
+                console.log(e)
+            }
         },
         /**
          * pop up handler
          * Author: Toanlk (25/12/2022)
          */
         PopUpHandler(isSuccess, res, successMessage) {
-            this.popUpNotify.notifyMessage = isSuccess
-                ? successMessage
-                : res.response.data.devMsg
-            this.popUpNotify.typeNotify = isSuccess ? 'success' : 'error'
-            this.popUpNotify.isShowingUpPopUp = true
-            console.log(this.popUpNotify)
+            try {
+                this.popUpNotify.notifyMessage = isSuccess
+                    ? successMessage
+                    : res.response.data.devMsg
+                this.popUpNotify.typeNotify = isSuccess ? 'success' : 'error'
+                this.popUpNotify.isShowingUpPopUp = true
+                console.log(this.popUpNotify)
+            } catch (e) {
+                console.log(e)
+            }
         },
         /**
          * load all department
          * Author:toanlk (25/12/2022)
          */
         loadAllDepartment() {
-            axios
-                .get('https://amis.manhnv.net/api/v1/Departments')
-                .then((res) => {
-                    this.Departments = res.data
-                    console.log(res)
-                })
-                .catch((err) => {
-                    console.log(err)
-                })
+            try {
+                axios
+                    .get('https://amis.manhnv.net/api/v1/Departments')
+                    .then((res) => {
+                        this.Departments = res.data
+                        console.log(res)
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    })
+            } catch (e) {
+                console.log(e)
+            }
         },
         /**
          * show dropdownlist
          * Author: Toanlk (25/12/2022)
          */
         ShowAndHideDropDownList() {
-            this.isDepartmentComboBoxOpen = true
+            try {
+                this.isDepartmentComboBoxOpen = !this.isDepartmentComboBoxOpen
+            } catch (e) {
+                console.log(e)
+            }
         },
         /**
          * selected department Action of user handler
          * Author: Toanlk (25/12/2022)
          */
         SelectedDepartmentElement(departmentItem) {
-            this.selectedDepartment = departmentItem
-            this.Employee.DepartmentId = this.selectedDepartment.DepartmentId
-            this.isDepartmentComboBoxOpen = false
+            try {
+                this.selectedDepartment = departmentItem
+                this.Employee.DepartmentId =
+                    this.selectedDepartment.DepartmentId
+                this.isDepartmentComboBoxOpen = false
+            } catch (e) {
+                console.log(e)
+            }
         },
         closePopUpEvent() {
-            this.popUpNotify.isShowingUpPopUp = false
+            try {
+                this.popUpNotify.isShowingUpPopUp = false
+            } catch (e) {
+                console.log(e)
+            }
         },
     },
 }
@@ -1699,8 +1718,8 @@ export default {
 }
 .employee-addtion__right-second {
     display: flex;
-    margin-top: 3px;
-    margin-top: 17px;
+    margin-top: -4px;
+    /* margin-top: 17px; */
 }
 .margin_12 {
     display: block;
@@ -2269,6 +2288,32 @@ export default {
     border-radius: 50px;
     color: #ffffff;
     background-color: #50b83c;
+}
+.dropdown-list__list-item-text {
+    text-align: left;
+}
+.text-field__cmnd:hover .sidebar__item-tool-tip {
+    display: flex;
+}
+.sidebar__item-tool-tip {
+    position: absolute;
+    /* left: calc(100% + 8px); */
+    /* width: 94px; */
+    padding: 0 12px;
+    height: 40px;
+    background-color: var(--sidebar-color);
+    top: 250%;
+    transform: translateY(-50%);
+    bottom: 0;
+    white-space: nowrap;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    opacity: 94%;
+    color: #ffffff;
+    text-align: center;
+    z-index: 1000001;
 }
 /* dataPicker */
 </style>

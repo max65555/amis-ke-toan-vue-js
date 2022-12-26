@@ -94,7 +94,7 @@
                                             >
                                                 Số CMND
                                                 <div
-                                                    class="sidebar__item-tool-tip text-label__tooltip display_none"
+                                                    class="sidebar__item-tool-tip text-label__tooltip"
                                                 >
                                                     số chứng minh thư nhân dân
                                                 </div>
@@ -304,7 +304,7 @@
                                                                 class="dropdown-list__list-item"
                                                             >
                                                                 <button
-                                                                    class="reset-css-button"
+                                                                    class="reset-css-button" style="text-align: left;"
                                                                 >
                                                                     <span
                                                                         class="dropdown-list__list-item-text"
@@ -323,6 +323,7 @@
                                                                             employee.EmployeeId
                                                                         )
                                                                     "
+                                                                    style="text-align: left;"
                                                                 >
                                                                     <span
                                                                         class="dropdown-list__list-item-text"
@@ -336,6 +337,7 @@
                                                             >
                                                                 <button
                                                                     class="reset-css-button"
+                                                                    style="text-align: left;"
                                                                 >
                                                                     <span
                                                                         class="dropdown-list__list-item-text"
@@ -689,6 +691,7 @@
 <script>
 import axios from 'axios'
 import AddNewEmployee from './AddNewEmployee'
+
 export default {
     name: 'EmployeesList',
     components: {
@@ -738,57 +741,86 @@ export default {
          * Author: toanlk(25/12/2022)
          */
         ShowAddNewEmployeeForm: function () {
-            this.isUpdateForm = false
-            this.isAddNewEmployeeShowingUp = !this.isAddNewEmployeeShowingUp
+            try{
+
+                this.isUpdateForm = false
+                this.isAddNewEmployeeShowingUp = !this.isAddNewEmployeeShowingUp
+            }
+            catch(e){
+                console.log(e);
+            }
         },
         /**
          * update button handler
          * Author: Toanlk(25/12/2022)
          */
         UpdateButtonHandler(employee) {
-            this.isUpdateForm = true
-            this.updateEmployee = employee
-            this.isAddNewEmployeeShowingUp = true
+            try{
+
+                this.isUpdateForm = true
+                this.updateEmployee = employee
+                this.isAddNewEmployeeShowingUp = true
+            }
+            catch(e){
+                console.log(e);
+            }
         },
         /**
          * show dropdownlist handler
          * Author: Toanlk(25/12/2022)
          */
         ShowDropDownList(employeeID) {
-            this.dropdownListOpen = true
-            this.currentRowDropDownListOpen = employeeID
-        },
-        /**
-         * processLoading data animation
-         * Author: Toanlk(25/12/2022)
-         */
-        ProcessLoadingData() {},
+            try{
+
+                this.dropdownListOpen = !this.dropdownListOpen; 
+                this.currentRowDropDownListOpen = employeeID
+                
+            }
+            catch(e){
+                console.log(e);
+            }
+            },
+
         /**
          * delete an employee action
          * Author: Toanlk(25/12/2022)
          */
         DeleteConfirmAction(employedId) {
-            this.isDeleteEmployeesAction = false
-            this.dropdownListOpen = false
-            this.notifyMessage = 'Bạn có chắc chắn muốn xóa không ?'
-            this.typeNotify = 'question'
-            this.ispopupConfirmDeleteShow = true
+            try{
+
+                this.isDeleteEmployeesAction = false
+                this.dropdownListOpen = false
+                this.notifyMessage = 'Bạn có chắc chắn muốn xóa không ?'
+                this.typeNotify = 'question'
+                this.ispopupConfirmDeleteShow = true
+            }
+            catch(e){
+                console.log(e)
+            }
         },
         /**
          * close pop up confirm delete
          * Author: Toanlk(25/12/2022)
          */
         cancelDeleteConfirmAction() {
-            this.ispopupConfirmDeleteShow = false
+            try{
+
+                this.ispopupConfirmDeleteShow = false
+            }
+            catch(e){
+                console.log(e)
+            }
         },
         /**
          * confirm delete an employe action
          * Author: Toanlk(25/12/2022)
          */
         confirmDeleteConfirmAction() {
-            this.ispopupConfirmDeleteShow = false
-            console.log('delete action' + this.currentRowDropDownListOpen)
-            axios
+            try{
+
+                this.ispopupConfirmDeleteShow = false
+                console.log('delete action' + this.currentRowDropDownListOpen)
+                axios
                 .delete(
                     'https://amis.manhnv.net/api/v1/Employees/' +
                         this.currentRowDropDownListOpen
@@ -799,27 +831,40 @@ export default {
                 .catch((err) => {
                     console.log('error')
                 })
-        },
-        /**
+            }
+            catch(e){
+                console.log(e)
+            }
+
+            },
+            /**
          * delete employees action
          * Author: Toanlk(25/12/2022)
          */
         DeleteEmployees() {
-            console.log(this.deleteEmployeesCollection)
-            this.isDeleteEmployeesAction = true
-            this.notifyMessage = 'Bạn có chắc chắn muốn xóa không ?'
-            this.typeNotify = 'question'
-            this.ispopupConfirmDeleteShow = true
+            try{
+
+                console.log(this.deleteEmployeesCollection)
+                this.isDeleteEmployeesAction = true
+                this.notifyMessage = 'Bạn có chắc chắn muốn xóa không ?'
+                this.typeNotify = 'question'
+                this.ispopupConfirmDeleteShow = true
+            }
+            catch(e){
+                console.log(e);
+            }
         },
         /**
          * confirm delete employees action
          * Author: Toanlk(25/12/2022)
          */
         confirmDeleteEmployeesConfirmAction() {
-            console.log('xoa hang loat')
-            this.ispopupConfirmDeleteShow = false
-            this.deleteEmployeesCollection.forEach((item) => {
-                axios
+            try{
+
+                console.log('xoa hang loat')
+                this.ispopupConfirmDeleteShow = false
+                this.deleteEmployeesCollection.forEach((item) => {
+                    axios
                     .delete('https://amis.manhnv.net/api/v1/Employees/' + item)
                     .then((res) => {
                         this.loadAllEmployee()
@@ -828,26 +873,41 @@ export default {
                     .catch((err) => {
                         console.log('error')
                     })
-            })
-        },
+                })
+            }
+            catch(e){
+                console.log(e);
+            }
+            },
         /**
          * date Formatter
          * Author: toanlk(25/12/2022)
          * @param {*} date
          */
         dateTimeFormatter(date) {
-            date += ''
-            if (date == 'null') {
-                return ''
+            try{
+
+                date += ''
+                if (date == 'null') {
+                    return ''
+                }
+                let result = date.slice(0, 10)
+                return result
             }
-            let result = date.slice(0, 10)
-            return result
+            catch(e){
+                console.log(e)
+            }
         },
 
     },
     created() {
         //render all employee
-        this.loadAllEmployee()
+        try{
+            this.loadAllEmployee()
+        }
+        catch(e){
+            console.log(e);
+        }
     },
 }
 </script>
@@ -1361,5 +1421,28 @@ data-table__data-item	height: 100%; */
     background-color: #e0e0e0;
     color: #e0e0e0;
     padding: 4px 0;
+}
+.text-field__cmnd:hover .sidebar__item-tool-tip{
+    display:flex;
+}
+.sidebar__item-tool-tip {
+    position: absolute;
+    /* left: calc(100% + 8px); */
+    /* width: 94px; */
+    padding: 0 12px;
+    height: 40px;
+    background-color: var(--sidebar-color);
+    top: 150%;
+    transform: translateY(-50%);
+    bottom: 0;
+    white-space: nowrap;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    opacity: 94%;
+    color: #ffffff;
+    text-align: center;
+    z-index: 1000001;
 }
 </style>
