@@ -82,7 +82,8 @@ export default {
     background-color:transparent;
     display:flex;
     justify-content: center;
-    align-items:center ;
+    align-items:center ;    
+    width: auto;
 }
 .button--icon{
   width:20px;

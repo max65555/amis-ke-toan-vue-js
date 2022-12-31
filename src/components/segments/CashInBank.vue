@@ -1,4 +1,4 @@
-<template>
+d<template>
   <div class="main-content">
         <div class="cash-page__container">
           <main-button 
@@ -13,6 +13,16 @@
           :isDisabled="false"
           iconPosition="-1098px -90px"
           ></icon-button>
+          <text-field
+          :isContainIcon="false"
+          iconBackgroundPosition="-990px -358px "
+          :isError="isError" 
+          ref="test"
+          width="270px"
+          label="test1"
+          :isContainLabel="false"
+          placeholder="your name"
+          ></text-field>
         </div>
         
     </div>
@@ -23,11 +33,13 @@ export default {
   data() {
     return {
     isDisabled :false,
+    isError : false
   }
   },
   methods: {
     buttonHandler() {
-      console.log("do something from outside");
+      this.$refs.test.disableTheInput()
+      // this.isError = !this.isError;
     }
   }
 }
@@ -42,7 +54,7 @@ export default {
 }
 .cash-page__container {
     height: calc(100vh - 56px - 36px - 24px - 120px);
-    display: flex;
+    display: block;
     justify-content: center;
     align-items: center;
 }

@@ -80,6 +80,7 @@ export default {
     background-color: #50b83c;
     color: white;
     padding: 0 19px;
+    width: auto;
 }
 .button__text {
     white-space: nowrap;
