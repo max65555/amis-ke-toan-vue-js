@@ -62,7 +62,7 @@ export default {
                 },
                 {
                     menuItemName: 'Tiền gửi',
-                    link: '/monney',
+                    link: '/cashinbank',
                     menuItemBackgroundPos:
                         'background-position: -117px -1628px;',
                 },

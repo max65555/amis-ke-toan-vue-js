@@ -1,7 +1,12 @@
 <template>
     <div>
-        <button @click="eventButton()" class="button__main btn">
-            <span class="button__text">{{ name }}</span>
+        <button @mousedown="mouseDownHandler" @mouseup="mouseUp" 
+        @mouseleave="mouseLeave"
+        @mouseenter="mouseEnter"
+        class="button__main btn"
+        :class="[{ 'btn--pressed': isPressing }, { 'btn--hover': isHover }, {'btn--disabled':isDisabled
+        }]" :disabled="this.isDisabled">
+            <span class="button__text">{{ label }}</span>
         </button>
     </div>
 </template>
@@ -10,19 +15,55 @@
 export default {
     name: 'MainButton',
     props: {
-        name: {
+        label: {
             type: String,
-            required: true,
+            required: false,
         },
-        eventButton: {
-            type: Function,
-            required: true,
-        },
+        isDisabled: {
+            typ: Boolean,
+            required: true
+        }
     },
+    // beforeMount() {
+    //     if (this.isDisabled == true) {
+
+    //   }  
+    // },
+    data(){
+        return{
+            isPressing:false,
+            isHover: false,
+            
+        }
+    },
+    methods: {
+        mouseDownHandler() {
+            this.isHover = false
+            this.isPressing = true;
+        },
+        mouseUp() {
+            this.isPressing = false;
+            this.isHover = true
+            this.clickHandler();
+        },
+        mouseLeave() {
+            this.isPressing = false;
+            this.isHover = false
+            this.clickHandler()
+        },
+        mouseEnter() {
+            console.log("enter");
+            this.isHover = true;
+        },
+        clickHandler() {
+            this.$emit("click-handler");  
+        }
+    }
 }
 </script>
 
 <style scoped>
+
 .button {
     display: flex;
     justify-content: center;
@@ -31,14 +72,18 @@ export default {
     /* delete it */
     /* margin: 0 18px 0 18px; */
 }
+.btn--disabled{
+    opacity:56%;
+}
+
 .btn {
     padding: 0;
     margin: 0;
     position: relative;
 }
-.button__main:hover {
+.btn--hover {
     cursor: pointer;
-    background-color: #5dc748;
+    background-color: #5dc748 !important;
 }
 
 /* main button  */
@@ -54,4 +99,9 @@ export default {
 .button__text {
     white-space: nowrap;
 }
+.btn--pressed{
+    background-color: #118044;  
+}
+
+
 </style>

@@ -785,9 +785,9 @@ export default {
          * delete an employee action
          * Author: Toanlk(25/12/2022)
          */
-        DeleteConfirmAction(employedId) {
+        DeleteConfirmAction(employeeID) {
             try{
-
+                console.log(employeeID);
                 this.isDeleteEmployeesAction = false
                 this.dropdownListOpen = false
                 this.notifyMessage = 'Bạn có chắc chắn muốn xóa không ?'
@@ -821,16 +821,17 @@ export default {
                 this.ispopupConfirmDeleteShow = false
                 console.log('delete action' + this.currentRowDropDownListOpen)
                 axios
-                .delete(
-                    'https://amis.manhnv.net/api/v1/Employees/' +
+                    .delete(
+                        'https://amis.manhnv.net/api/v1/Employees/' +
                         this.currentRowDropDownListOpen
-                )
-                .then((res) => {
-                    this.loadAllEmployee()
-                })
-                .catch((err) => {
-                    console.log('error')
-                })
+                    )
+                    .then((res) => {
+                        console.log(res);
+                        this.loadAllEmployee()
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    });
             }
             catch(e){
                 console.log(e)
@@ -871,7 +872,7 @@ export default {
                         console.log(res)
                     })
                     .catch((err) => {
-                        console.log('error')
+                        console.log(err)
                     })
                 })
             }
