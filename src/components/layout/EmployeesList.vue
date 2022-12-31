@@ -680,8 +680,9 @@
         </div>
     </div>
     <!-- pop up  -->
+    <!-- TODO: turn this one on -->
     <add-new-employee
-        v-if="this.isAddNewEmployeeShowingUp"
+        v-if="this.isAddNewEmployeeShowingUp" 
         @onClose="ShowAddNewEmployeeForm"
         :isUpdate="this.isUpdateForm"
         :EmployeeBeUpdated="this.updateEmployee"

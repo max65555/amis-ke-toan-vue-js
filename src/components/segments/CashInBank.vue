@@ -6,8 +6,15 @@
           label="Click here"
           :isDisabled= "false" 
           ></main-button>
-          
+          <semi-button @click-handler="buttonHandler"
+          label="Click here"
+          :isDisabled="false"></semi-button>
+          <icon-button @click-handler="buttonHandler"
+          :isDisabled="false"
+          iconPosition="-1098px -90px"
+          ></icon-button>
         </div>
+        
     </div>
 </template>
 <script>
