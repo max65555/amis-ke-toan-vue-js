@@ -3,7 +3,7 @@
         <button @mousedown="mouseDownHandler" @mouseup="mouseUp" 
         @mouseleave="mouseLeave"
         @mouseenter="mouseEnter"
-        class="button__main btn"
+        class="button__link btn"
         :class="[{ 'btn--pressed': isPressing }, { 'btn--hover': isHover }, {'btn--disabled':isDisabled
         }]" :disabled="this.isDisabled">
             <span class="button__text">{{ label }}</span>
@@ -13,7 +13,7 @@
 
 <script>
 export default {
-    name: 'MainButton',
+    name: 'LinkButton',
     props: {
         label: {
             type: String,
@@ -71,25 +71,25 @@ export default {
 }
 .btn--hover {
     cursor: pointer;
-    background-color: #5dc748 !important;
+    opacity: 80%;
 }
 
 /* main button  */
-.button__main {
+.button__link {
     /* min-width: 80px; */
     height: 36px;
-    border-radius: 4px;
+    /* border-radius: 4px; */
     border: unset;
-    background-color: #50b83c;
-    color: white;
-    padding: 0 19px;
+    /* background-color: #50b83c; */
+    color: #50B83C;
+    /* padding: 0 19px; */
     width: auto;
 }
 .button__text {
     white-space: nowrap;
 }
 .btn--pressed{
-    background-color: #118044;  
+    color: #118044;  
 }
 
 

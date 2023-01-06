@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="btn__container">
         <button @mousedown="mouseDownHandler" @mouseup="mouseUp" 
         @mouseleave="mouseLeave"
         @mouseenter="mouseEnter"
@@ -58,7 +58,9 @@ export default {
 </script>
 
 <style scoped>
-
+.btn__container{
+    width:fit-content
+}
 .btn--disabled{
     opacity:56%;
 }

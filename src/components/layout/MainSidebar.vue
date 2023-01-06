@@ -22,6 +22,7 @@
                 v-for="(item, key) in this.menuItems"
                 :key="key"
             >
+            <div v-if="item.selected">test</div>
                 <div
                     class="sidebar__item--icon"
                     :style="item.menuItemBackgroundPos"
@@ -44,7 +45,7 @@ export default {
     name: 'MainSideBar',
     components: {},
     props: {},
-    methods: {},
+
     data() {
         return {
             menuItems: [
@@ -230,6 +231,7 @@ export default {
     color: white;
 }
 .sidebar__item-tool-tip {
+    z-index:100000 !important;
     position: absolute;
     left: calc(100% + 8px);
     /* width:94px; */

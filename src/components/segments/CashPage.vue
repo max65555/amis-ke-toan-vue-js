@@ -1,14 +1,17 @@
 <template>
     <div class="main-content">
-        <div class="cash-page__container">
-            <h1 class="cash-page__text">Cash Page is coming soon</h1>
-        </div>
+        <data-table :nameOfColumns="nameOfColumns"></data-table>
     </div>
 </template>
 
 <script>
 export default {
     name: 'CashPage',
+    data() {
+        return {
+            nameOfColumns: ["Mã nhân viên", "Tên Nhân Viên", "Địa Chỉ","Địa Chỉ","Địa Chỉ","Địa Chỉ","Địa Chỉ","Địa Chỉ"],
+        }
+    }
 }
 </script>
 
