@@ -1,636 +1,101 @@
 <template>
-    <div class="popup-add-new-employee" id="popupAddNewEmployee">
+    <overlay-background zIndex="100" />
+    <div class="employee-addition__container">
         <div class="employee-addition-wrapper">
-            <div style="padding: 8px">
-                <div class="employee-addition__header">
-                    <div class="employee-addition__header-left">
-                        <span class="addition__header--title">
-                            {{
-                                !this.isUpdate
-                                    ? 'Thêm Mới Nhân Viên'
-                                    : 'Thay Đổi Thông Tin'
-                            }}
-                        </span>
-                        <div class="addition__header--select-position">
-                            <div class="selection-position">
-                                <input
-                                    type="radio"
-                                    name=""
-                                    id=""
-                                    class="selection-position__check-box"
-                                />
-                                <span class="selection-position__text"
-                                    >Tổ Chức</span
-                                >
-                            </div>
-                            <div class="selection-position">
-                                <input
-                                    type="radio"
-                                    name=""
-                                    id=""
-                                    class="selection-position__check-box"
-                                />
-                                <span class="selection-position__text"
-                                    >Tổ Chức</span
-                                >
-                            </div>
-                        </div>
+            <div class="employee-addition__header">
+                <div class="employee-addition__header-left">
+                    <span class="addition__header--title">
+                        {{
+                            !this.isUpdate
+                                ? 'Thêm Mới Nhân Viên'
+                                : 'Thay Đổi Thông Tin'
+                        }}
+                    </span>
+                    <div class="addition__header--select-position">
+                        <main-radio
+                            :isContainLabel="false"
+                            :radioID="selectedObject"
+                            :radioItem="[
+                                { key: 'Tổ chức', value: '1' },
+                                { key: 'Cá Nhân', value: '2' },
+                            ]"
+                        />
                     </div>
-                    <div class="employee-addition__header-right">
-                        <div class="employee-addition__right-icon">
-                            <div class="employee-addition__icon-left"></div>
-                        </div>
-                        <div class="employee-addition__right-icon">
-                            <button
-                                id="employee-addition-form__close-button"
-                                class="employee-addition__icon-right"
-                                @click="closeThisForm"
-                            ></button>
+                </div>
+                <div class="employee-addition__header-right">
+                    <div class="employee-addition__right-icon">
+                        <div class="employee-addition__icon-left"></div>
+                    </div>
+                    <div class="employee-addition__right-icon">
+                        <button
+                            id="employee-addition-form__close-button"
+                            class="employee-addition__icon-right"
+                            @click="closeThisForm"
+                        ></button>
+                    </div>
+                </div>
+            </div>
+            <!-- start information form -->
+            <div class="employee-addition__body">
+                <div class="employee-addition__information-left">
+                    <div class="employee-addition__left-first">
+                        <!-- TODO: change TextFieldInput -->
+                        <text-field
+                            :isContainLabel="true"
+                            label="Mã Nhân Viên"
+                            v-model="Employee.EmployeeCode"
+                        />
+                        <text-field
+                            :isContainLabel="true"
+                            label="Tên Nhân Viên"
+                            v-model="Employee.EmployeeName"
+                        />
+                    </div>
+                    <div class="employee-addition__left-second">
+                        <!-- start comboxboxlist -->
+
+                        <!-- end comboxboxlist -->
+                    </div>
+                    <div class="employee-addition__left-second">
+                        <div
+                            class="textfield text-field__normal"
+                            style="margin-top: 0px"
+                        >
+                            <div class="normal-text-field__label">
+                                <span class="normal-text-field__label--text">
+                                    Chức danh
+                                </span>
+                            </div>
+                            <div class="normal-text-field__input display_block">
+                                <input
+                                    class="normal-text-field__input--text"
+                                    type="text"
+                                />
+                                <div
+                                    style="display: none"
+                                    class="normal-text-field__icon--result"
+                                >
+                                    <i
+                                        class="icofont-check-circled normal-text-field__icon--icon"
+                                    ></i>
+                                </div>
+                            </div>
+                            <span
+                                style="display: none"
+                                class="normal-text-field__respond--text"
+                            >
+                                Tên trường không được để trống
+                            </span>
                         </div>
                     </div>
                 </div>
-                <!-- start information form -->
-                <div class="employee-addition__body">
-                    <div class="employee-addition__information-left">
-                        <div class="employee-addition__left-first">
-                            <!-- TODO: change TextFieldInput -->
-                            <div
-                                class="textfield text-field__normal employee_Id-input-field"
-                            >
-                                <div class="normal-text-field__label">
-                                    <span
-                                        class="normal-text-field__label--text"
-                                    >
-                                        Mã
-                                        <span class="text-being-required"
-                                            >*</span
-                                        >
-                                    </span>
-                                </div>
-                                <div
-                                    class="normal-text-field__input display_block"
-                                >
-                                    <input
-                                        class="normal-text-field__input--text add-new__employee--address"
-                                        type="text"
-                                        required
-                                        name="employeeID"
-                                        v-model="this.Employee.EmployeeCode"
-                                    />
-                                    <div
-                                        style="display: none"
-                                        class="normal-text-field__icon--result"
-                                    >
-                                        <i
-                                            class="icofont-check-circled normal-text-field__icon--icon"
-                                        ></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="textfield text-field__normal">
-                                <div class="normal-text-field__label">
-                                    <span
-                                        class="normal-text-field__label--text"
-                                    >
-                                        Tên
-                                        <span class="text-being-required"
-                                            >*</span
-                                        >
-                                    </span>
-                                </div>
-                                <div
-                                    class="normal-text-field__input display_block"
-                                >
-                                    <input
-                                        class="normal-text-field__input--text"
-                                        type="text"
-                                        placeholder=""
-                                        required
-                                        v-model="this.Employee.EmployeeName"
-                                    />
-
-                                    <div
-                                        style="display: none"
-                                        class="normal-text-field__icon--result"
-                                    >
-                                        <i
-                                            class="icofont-check-circled normal-text-field__icon--icon"
-                                        ></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="employee-addition__left-second">
-                            <div
-                                class="dropdown-list"
-                                style="margin: 12px; display: none"
-                            >
-                                <span class="dropdown__label">
-                                    Đơn vị <span style="color: red">*</span>
-                                </span>
-                                <div
-                                    class="dropwdown__input dropdown__input--normal"
-                                >
-                                    <span class="dropdown__input-text">
-                                        đơn vị
-                                    </span>
-                                    <div class="dropdown__input-icon">
-                                        <i
-                                            class="icofont-rounded-down dropdown__i--icon"
-                                        ></i>
-                                    </div>
-                                </div>
-                                <div class="dropdown__text--error">
-                                    <span class="dropdown__span--error">
-                                        Error message
-                                    </span>
-                                </div>
-                                <div class="dropdown-list__list">
-                                    <div class="dropdown-list__list-item">
-                                        <span
-                                            class="dropdown-list__list-item-text"
-                                        >
-                                            Hà Nội
-                                        </span>
-                                    </div>
-                                    <div class="dropdown-list__list-item">
-                                        <span
-                                            class="dropdown-list__list-item-text"
-                                        >
-                                            TP hồ Chí Minh
-                                        </span>
-                                    </div>
-                                    <div class="dropdown-list__list-item">
-                                        <span
-                                            class="dropdown-list__list-item-text"
-                                        >
-                                            Đà Nắng
-                                        </span>
-                                    </div>
-                                    <div class="dropdown-list__list-item">
-                                        <span
-                                            class="dropdown-list__list-item-text"
-                                        >
-                                            Đà Nắng
-                                        </span>
-                                    </div>
-                                    <div class="dropdown-list__list-item">
-                                        <span
-                                            class="dropdown-list__list-item-text"
-                                        >
-                                            Đà Nắng
-                                        </span>
-                                    </div>
-                                    <div class="dropdown-list__list-item">
-                                        <span
-                                            class="dropdown-list__list-item-text"
-                                        >
-                                            Đà Nắng
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- start comboxboxlist -->
-                            <div class="combo-box-list">
-                                <span class="combo-box__label">
-                                    Đơn vị <span style="color: red">*</span>
-                                </span>
-                                <div class="dropwdown__input">
-                                    <input
-                                        class="combo-box__input-text add-new__department--input"
-                                        placeholder=""
-                                        type="text"
-                                        required
-                                        :value="
-                                            this.selectedDepartment
-                                                .DepartmentName
-                                        "
-                                    />
-                                    <button
-                                        style="width: auto"
-                                        @click="this.ShowAndHideDropDownList"
-                                    >
-                                        <div
-                                            class="combo-box__input-icon add-new__department-combobox--icon"
-                                        >
-                                            <!-- <i class="icofont-close-circled combo-box__i--close-icon"></i> -->
-                                            <i
-                                                class="icofont-rounded-down combo-box__i--icon"
-                                            ></i>
-                                        </div>
-                                    </button>
-                                </div>
-                                <div
-                                    class="combo-box__text--error"
-                                    style="visibility: hidden"
-                                >
-                                    <span class="combo-box__span--error">
-                                        Tên trường không được để trống
-                                    </span>
-                                </div>
-                                <div>
-                                    <div
-                                        class="combo-box-list__list add-new__department-combo-box-list--list"
-                                        v-if="this.isDepartmentComboBoxOpen"
-                                    >
-                                        <div
-                                            class="combo-box-list--placeholder-item"
-                                        >
-                                            <span
-                                                class="combo-box-list--placeholder-text"
-                                            >
-                                                - chọn giá trị -
-                                            </span>
-
-                                            <i
-                                                class="icofont-check-alt combo-box-list--placeholder-icon"
-                                            ></i>
-                                        </div>
-                                        <!-- TODO:department -->
-                                        <div
-                                            class="combo-box-list__list-item add-new__department-combo-box-item"
-                                            v-for="(item, key) in this
-                                                .Departments"
-                                            :key="key"
-                                            :departmentID="item.DepartmentId"
-                                        >
-                                            <button
-                                                style="text-align: left"
-                                                @click="
-                                                    SelectedDepartmentElement(
-                                                        item
-                                                    )
-                                                "
-                                            >
-                                                <span
-                                                    class="combo-box-list__list-item-text"
-                                                    >{{
-                                                        item.DepartmentName
-                                                    }}</span
-                                                >
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- end comboxboxlist -->
-                        </div>
-                        <div class="employee-addition__left-second">
-                            <div
-                                class="textfield text-field__normal"
-                                style="margin-top: 0px"
-                            >
-                                <div class="normal-text-field__label">
-                                    <span
-                                        class="normal-text-field__label--text"
-                                    >
-                                        Chức danh
-                                    </span>
-                                </div>
-                                <div
-                                    class="normal-text-field__input display_block"
-                                >
-                                    <input
-                                        class="normal-text-field__input--text"
-                                        type="text"
-                                    />
-                                    <div
-                                        style="display: none"
-                                        class="normal-text-field__icon--result"
-                                    >
-                                        <i
-                                            class="icofont-check-circled normal-text-field__icon--icon"
-                                        ></i>
-                                    </div>
-                                </div>
-                                <span
-                                    style="display: none"
-                                    class="normal-text-field__respond--text"
-                                >
-                                    Tên trường không được để trống
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="employee-addition__information-right">
-                        <div
-                            class="employee-addition__right-first"
-                            style="padding-top: 8px"
-                        >
-                            <div class="date-picker-container">
-                                <div class="date-picker__show-button">
-                                    <div class="normal-text-field__label">
-                                        <span
-                                            class="normal-text-field__label--text"
-                                        >
-                                            Ngày Sinh
-                                        </span>
-                                    </div>
-                                    <div
-                                        class="date-picker__button identity-issua__data-picker"
-                                    >
-                                        <span
-                                            class="date-picker--date-format"
-                                            style="display: none"
-                                        >
-                                            30/9/2022
-                                        </span>
-                                        <div
-                                            class="date-picker__button-icon"
-                                            style="display: none"
-                                        >
-                                            <i
-                                                class="icofont-ui-calendar date-picker__i--calender-icon"
-                                            ></i>
-                                        </div>
-                                        <input
-                                            id="date-of-birth"
-                                            type="date"
-                                            class="identity-issue__data-picker"
-                                            v-model="this.Employee.DateOfBirth"
-                                        />
-                                    </div>
-                                </div>
-                                <div
-                                    class="date-picker__top-part"
-                                    style="display: none"
-                                >
-                                    <div class="date-picker__calendar">
-                                        <div class="date-picker__header">
-                                            <div
-                                                class="date-picker__month-year"
-                                            >
-                                                <span
-                                                    class="date-picker__month-year--text"
-                                                    >Tháng 9, 2022</span
-                                                >
-                                                <div
-                                                    class="date-picker__month-year--icon"
-                                                >
-                                                    <i
-                                                        class="icofont-rounded-down date-picker__month-year--down"
-                                                    ></i>
-                                                </div>
-                                            </div>
-                                            <div
-                                                class="date-picker__switch-page"
-                                            >
-                                                <div
-                                                    class="date-picker__switch-page--icon date-picker__switch-page--distance"
-                                                >
-                                                    <i
-                                                        class="icofont-rounded-left date-picker__switch-page--down"
-                                                    ></i>
-                                                </div>
-                                                <div
-                                                    class="date-picker__switch-page--icon"
-                                                >
-                                                    <i
-                                                        class="icofont-rounded-right date-picker__switch-page--down"
-                                                    ></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="date-picker__body">
-                                            <div
-                                                class="date-picker__body--a-line"
-                                                style="padding-top: 0"
-                                            >
-                                                <div
-                                                    class="date-picker__body--days-in-week"
-                                                >
-                                                    T2
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week"
-                                                >
-                                                    T3
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week"
-                                                >
-                                                    T4
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week"
-                                                >
-                                                    T5
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week"
-                                                >
-                                                    T6
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week"
-                                                >
-                                                    T7
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week"
-                                                >
-                                                    CN
-                                                </div>
-                                            </div>
-
-                                            <div
-                                                class="date-picker__body--a-line"
-                                            >
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                ></div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                ></div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    1
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    2
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    3
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    4
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    5
-                                                </div>
-                                            </div>
-                                            <div
-                                                class="date-picker__body--a-line"
-                                            >
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    6
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    7
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    8
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    9
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    10
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    11
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    12
-                                                </div>
-                                            </div>
-                                            <div
-                                                class="date-picker__body--a-line"
-                                            >
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    13
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    14
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    15
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    16
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    17
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    18
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    19
-                                                </div>
-                                            </div>
-                                            <div
-                                                class="date-picker__body--a-line"
-                                            >
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    20
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    21
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    22
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    23
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    24
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    25
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    26
-                                                </div>
-                                            </div>
-                                            <div
-                                                class="date-picker__body--a-line"
-                                                style="padding-bottom: 0"
-                                            >
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    27
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    28
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    29
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    30
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                ></div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                ></div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                ></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="date-picker__footer">
-                                        <span class="date-picker__footer--text">
-                                            Hôm nay
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div
-                                class="addition__header--select-position margin_12"
-                            >
+                <div class="employee-addition__information-right">
+                    <div
+                        class="employee-addition__right-first"
+                        style="padding-top: 8px"
+                    >
+                        <div class="date-picker-container">
+                            <div class="date-picker__show-button">
                                 <div class="normal-text-field__label">
                                     <span
                                         class="normal-text-field__label--text"
@@ -638,461 +103,706 @@
                                         Ngày Sinh
                                     </span>
                                 </div>
-                                <div class="employee-addition__right-first">
-                                    <div class="selection-position">
-                                        <input
-                                            type="radio"
-                                            name="gender"
-                                            id=""
-                                            class="selection-position__check-box"
-                                            value="0"
-                                            v-model="this.Employee.Gender"
-                                        />
-                                        <span class="selection-position__text"
-                                            >Nam</span
-                                        >
-                                    </div>
-                                    <div class="selection-position">
-                                        <input
-                                            type="radio"
-                                            name="gender"
-                                            id=""
-                                            class="selection-position__check-box"
-                                            value="1"
-                                            v-model="this.Employee.Gender"
-                                        />
-                                        <span class="selection-position__text"
-                                            >Nữ</span
-                                        >
-                                    </div>
-                                    <div class="selection-position">
-                                        <input
-                                            type="radio"
-                                            name="gender"
-                                            id=""
-                                            class="selection-position__check-box"
-                                            value="2"
-                                            v-model="this.Employee.Gender"
-                                        />
-                                        <span class="selection-position__text"
-                                            >Khác</span
-                                        >
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="employee-addtion__right-second">
-                            <div
-                                class="textfield text-field__normal"
-                                style="margin-top: 0"
-                            >
-                                <div class="normal-text-field__label">
-                                    <span
-                                        class="normal-text-field__label--text text-field__cmnd"
-                                    >
-                                        Số CMND
-                                        <div
-                                            class="sidebar__item-tool-tip text-label__tooltip"
-                                        >
-                                            số chứng minh thư nhân dân
-                                        </div>
-                                    </span>
-                                </div>
                                 <div
-                                    class="normal-text-field__input display_block"
+                                    class="date-picker__button identity-issua__data-picker"
                                 >
-                                    <input
-                                        class="normal-text-field__input--text employee-addition__identity-id"
-                                        type="text"
-                                        v-model="this.Employee.IdentityNumber"
-                                    />
-
-                                    <div
+                                    <span
+                                        class="date-picker--date-format"
                                         style="display: none"
-                                        class="normal-text-field__icon--result"
+                                    >
+                                        30/9/2022
+                                    </span>
+                                    <div
+                                        class="date-picker__button-icon"
+                                        style="display: none"
                                     >
                                         <i
-                                            class="icofont-check-circled normal-text-field__icon--icon"
+                                            class="icofont-ui-calendar date-picker__i--calender-icon"
                                         ></i>
                                     </div>
+                                    <input
+                                        id="date-of-birth"
+                                        type="date"
+                                        class="identity-issue__data-picker"
+                                        v-model="this.Employee.DateOfBirth"
+                                    />
                                 </div>
-                                <span
-                                    style="display: none"
-                                    class="normal-text-field__respond--text"
-                                >
-                                    Tên trường không được để trống
-                                </span>
                             </div>
-                            <div class="date-picker-container">
-                                <div
-                                    class="date-picker__show-button"
-                                    style="margin: 0"
-                                >
-                                    <div class="normal-text-field__label">
-                                        <span
-                                            class="normal-text-field__label--text"
-                                        >
-                                            Ngày cấp
-                                        </span>
-                                    </div>
-                                    <div
-                                        class="date-picker__button identity-issua__data-picker"
-                                    >
-                                        <span
-                                            class="date-picker--date-format"
-                                            style="display: none"
-                                        >
-                                            30/9/2022
-                                        </span>
-                                        <div
-                                            class="date-picker__button-icon"
-                                            style="display: none"
-                                        >
-                                            <i
-                                                class="icofont-ui-calendar date-picker__i--calender-icon"
-                                            ></i>
+                            <div
+                                class="date-picker__top-part"
+                                style="display: none"
+                            >
+                                <div class="date-picker__calendar">
+                                    <div class="date-picker__header">
+                                        <div class="date-picker__month-year">
+                                            <span
+                                                class="date-picker__month-year--text"
+                                                >Tháng 9, 2022</span
+                                            >
+                                            <div
+                                                class="date-picker__month-year--icon"
+                                            >
+                                                <i
+                                                    class="icofont-rounded-down date-picker__month-year--down"
+                                                ></i>
+                                            </div>
                                         </div>
-                                        <input
-                                            type="date"
-                                            name=""
-                                            id=""
-                                            class="identity-issue__data-picker data-picker__identityDate"
-                                            v-model="this.Employee.identityDate"
-                                        />
+                                        <div class="date-picker__switch-page">
+                                            <div
+                                                class="date-picker__switch-page--icon date-picker__switch-page--distance"
+                                            >
+                                                <i
+                                                    class="icofont-rounded-left date-picker__switch-page--down"
+                                                ></i>
+                                            </div>
+                                            <div
+                                                class="date-picker__switch-page--icon"
+                                            >
+                                                <i
+                                                    class="icofont-rounded-right date-picker__switch-page--down"
+                                                ></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="date-picker__body">
+                                        <div
+                                            class="date-picker__body--a-line"
+                                            style="padding-top: 0"
+                                        >
+                                            <div
+                                                class="date-picker__body--days-in-week"
+                                            >
+                                                T2
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week"
+                                            >
+                                                T3
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week"
+                                            >
+                                                T4
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week"
+                                            >
+                                                T5
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week"
+                                            >
+                                                T6
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week"
+                                            >
+                                                T7
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week"
+                                            >
+                                                CN
+                                            </div>
+                                        </div>
+
+                                        <div class="date-picker__body--a-line">
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            ></div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            ></div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                1
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                2
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                3
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                4
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                5
+                                            </div>
+                                        </div>
+                                        <div class="date-picker__body--a-line">
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                6
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                7
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                8
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                9
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                10
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                11
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                12
+                                            </div>
+                                        </div>
+                                        <div class="date-picker__body--a-line">
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                13
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                14
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                15
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                16
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                17
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                18
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                19
+                                            </div>
+                                        </div>
+                                        <div class="date-picker__body--a-line">
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                20
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                21
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                22
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                23
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                24
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                25
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                26
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="date-picker__body--a-line"
+                                            style="padding-bottom: 0"
+                                        >
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                27
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                28
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                29
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                30
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            ></div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            ></div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            ></div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div
-                                    class="date-picker__top-part"
-                                    style="display: none"
-                                >
-                                    <div class="date-picker__calendar">
-                                        <div class="date-picker__header">
-                                            <div
-                                                class="date-picker__month-year"
-                                            >
-                                                <span
-                                                    class="date-picker__month-year--text"
-                                                    >Tháng 9, 2022</span
-                                                >
-                                                <div
-                                                    class="date-picker__month-year--icon"
-                                                >
-                                                    <i
-                                                        class="icofont-rounded-down date-picker__month-year--down"
-                                                    ></i>
-                                                </div>
-                                            </div>
-                                            <div
-                                                class="date-picker__switch-page"
-                                            >
-                                                <div
-                                                    class="date-picker__switch-page--icon date-picker__switch-page--distance"
-                                                >
-                                                    <i
-                                                        class="icofont-rounded-left date-picker__switch-page--down"
-                                                    ></i>
-                                                </div>
-                                                <div
-                                                    class="date-picker__switch-page--icon"
-                                                >
-                                                    <i
-                                                        class="icofont-rounded-right date-picker__switch-page--down"
-                                                    ></i>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="date-picker__body">
-                                            <div
-                                                class="date-picker__body--a-line"
-                                                style="padding-top: 0"
-                                            >
-                                                <div
-                                                    class="date-picker__body--days-in-week"
-                                                >
-                                                    T2
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week"
-                                                >
-                                                    T3
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week"
-                                                >
-                                                    T4
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week"
-                                                >
-                                                    T5
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week"
-                                                >
-                                                    T6
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week"
-                                                >
-                                                    T7
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week"
-                                                >
-                                                    CN
-                                                </div>
-                                            </div>
-
-                                            <div
-                                                class="date-picker__body--a-line"
-                                            >
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                ></div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                ></div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    1
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    2
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    3
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    4
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    5
-                                                </div>
-                                            </div>
-                                            <div
-                                                class="date-picker__body--a-line"
-                                            >
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    6
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    7
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    8
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    9
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    10
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    11
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    12
-                                                </div>
-                                            </div>
-                                            <div
-                                                class="date-picker__body--a-line"
-                                            >
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    13
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    14
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    15
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    16
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    17
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    18
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    19
-                                                </div>
-                                            </div>
-                                            <div
-                                                class="date-picker__body--a-line"
-                                            >
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    20
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    21
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    22
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    23
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    24
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    25
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    26
-                                                </div>
-                                            </div>
-                                            <div
-                                                class="date-picker__body--a-line"
-                                                style="padding-bottom: 0"
-                                            >
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    27
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    28
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    29
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                >
-                                                    30
-                                                </div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                ></div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                ></div>
-                                                <div
-                                                    class="date-picker__body--days-in-week date-picker--days-in-month"
-                                                ></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="date-picker__footer">
-                                        <span class="date-picker__footer--text">
-                                            Hôm nay
-                                        </span>
-                                    </div>
+                                <div class="date-picker__footer">
+                                    <span class="date-picker__footer--text">
+                                        Hôm nay
+                                    </span>
                                 </div>
                             </div>
                         </div>
-                        <div style="display: flex">
+                        <div
+                            class="addition__header--select-position margin_12"
+                        >
+                            <div class="normal-text-field__label">
+                                <span class="normal-text-field__label--text">
+                                    Ngày Sinh
+                                </span>
+                            </div>
+                            <div class="employee-addition__right-first">
+                                <div class="selection-position">
+                                    <input
+                                        type="radio"
+                                        name="gender"
+                                        id=""
+                                        class="selection-position__check-box"
+                                        value="0"
+                                        v-model="this.Employee.Gender"
+                                    />
+                                    <span class="selection-position__text"
+                                        >Nam</span
+                                    >
+                                </div>
+                                <div class="selection-position">
+                                    <input
+                                        type="radio"
+                                        name="gender"
+                                        id=""
+                                        class="selection-position__check-box"
+                                        value="1"
+                                        v-model="this.Employee.Gender"
+                                    />
+                                    <span class="selection-position__text"
+                                        >Nữ</span
+                                    >
+                                </div>
+                                <div class="selection-position">
+                                    <input
+                                        type="radio"
+                                        name="gender"
+                                        id=""
+                                        class="selection-position__check-box"
+                                        value="2"
+                                        v-model="this.Employee.Gender"
+                                    />
+                                    <span class="selection-position__text"
+                                        >Khác</span
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="employee-addtion__right-second">
+                        <div
+                            class="textfield text-field__normal"
+                            style="margin-top: 0"
+                        >
+                            <div class="normal-text-field__label">
+                                <span
+                                    class="normal-text-field__label--text text-field__cmnd"
+                                >
+                                    Số CMND
+                                    <div
+                                        class="sidebar__item-tool-tip text-label__tooltip"
+                                    >
+                                        số chứng minh thư nhân dân
+                                    </div>
+                                </span>
+                            </div>
+                            <div class="normal-text-field__input display_block">
+                                <input
+                                    class="normal-text-field__input--text employee-addition__identity-id"
+                                    type="text"
+                                    v-model="this.Employee.IdentityNumber"
+                                />
+
+                                <div
+                                    style="display: none"
+                                    class="normal-text-field__icon--result"
+                                >
+                                    <i
+                                        class="icofont-check-circled normal-text-field__icon--icon"
+                                    ></i>
+                                </div>
+                            </div>
+                            <span
+                                style="display: none"
+                                class="normal-text-field__respond--text"
+                            >
+                                Tên trường không được để trống
+                            </span>
+                        </div>
+                        <div class="date-picker-container">
                             <div
-                                class="textfield text-field__normal pd-2"
-                                style="margin-top: 22px"
+                                class="date-picker__show-button"
+                                style="margin: 0"
                             >
                                 <div class="normal-text-field__label">
                                     <span
                                         class="normal-text-field__label--text"
                                     >
-                                        nơi cấp
+                                        Ngày cấp
                                     </span>
                                 </div>
                                 <div
-                                    class="normal-text-field__input display_block"
+                                    class="date-picker__button identity-issua__data-picker"
                                 >
-                                    <input
-                                        class="normal-text-field__input--text data-picker__identityPlace"
-                                        type="text"
-                                        v-model="this.Employee.identityPlace"
-                                    />
-
-                                    <div
+                                    <span
+                                        class="date-picker--date-format"
                                         style="display: none"
-                                        class="normal-text-field__icon--result"
+                                    >
+                                        30/9/2022
+                                    </span>
+                                    <div
+                                        class="date-picker__button-icon"
+                                        style="display: none"
                                     >
                                         <i
-                                            class="icofont-check-circled normal-text-field__icon--icon"
+                                            class="icofont-ui-calendar date-picker__i--calender-icon"
                                         ></i>
                                     </div>
+                                    <input
+                                        type="date"
+                                        name=""
+                                        id=""
+                                        class="identity-issue__data-picker data-picker__identityDate"
+                                        v-model="this.Employee.identityDate"
+                                    />
                                 </div>
-                                <span
-                                    style="display: none"
-                                    class="normal-text-field__respond--text"
-                                >
-                                    Tên trường không được để trống
-                                </span>
+                            </div>
+                            <div
+                                class="date-picker__top-part"
+                                style="display: none"
+                            >
+                                <div class="date-picker__calendar">
+                                    <div class="date-picker__header">
+                                        <div class="date-picker__month-year">
+                                            <span
+                                                class="date-picker__month-year--text"
+                                                >Tháng 9, 2022</span
+                                            >
+                                            <div
+                                                class="date-picker__month-year--icon"
+                                            >
+                                                <i
+                                                    class="icofont-rounded-down date-picker__month-year--down"
+                                                ></i>
+                                            </div>
+                                        </div>
+                                        <div class="date-picker__switch-page">
+                                            <div
+                                                class="date-picker__switch-page--icon date-picker__switch-page--distance"
+                                            >
+                                                <i
+                                                    class="icofont-rounded-left date-picker__switch-page--down"
+                                                ></i>
+                                            </div>
+                                            <div
+                                                class="date-picker__switch-page--icon"
+                                            >
+                                                <i
+                                                    class="icofont-rounded-right date-picker__switch-page--down"
+                                                ></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="date-picker__body">
+                                        <div
+                                            class="date-picker__body--a-line"
+                                            style="padding-top: 0"
+                                        >
+                                            <div
+                                                class="date-picker__body--days-in-week"
+                                            >
+                                                T2
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week"
+                                            >
+                                                T3
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week"
+                                            >
+                                                T4
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week"
+                                            >
+                                                T5
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week"
+                                            >
+                                                T6
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week"
+                                            >
+                                                T7
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week"
+                                            >
+                                                CN
+                                            </div>
+                                        </div>
+
+                                        <div class="date-picker__body--a-line">
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            ></div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            ></div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                1
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                2
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                3
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                4
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                5
+                                            </div>
+                                        </div>
+                                        <div class="date-picker__body--a-line">
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                6
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                7
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                8
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                9
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                10
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                11
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                12
+                                            </div>
+                                        </div>
+                                        <div class="date-picker__body--a-line">
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                13
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                14
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                15
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                16
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                17
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                18
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                19
+                                            </div>
+                                        </div>
+                                        <div class="date-picker__body--a-line">
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                20
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                21
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                22
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                23
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                24
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                25
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                26
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="date-picker__body--a-line"
+                                            style="padding-bottom: 0"
+                                        >
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                27
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                28
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                29
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            >
+                                                30
+                                            </div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            ></div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            ></div>
+                                            <div
+                                                class="date-picker__body--days-in-week date-picker--days-in-month"
+                                            ></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="date-picker__footer">
+                                    <span class="date-picker__footer--text">
+                                        Hôm nay
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="employee-addition__bottom">
                     <div style="display: flex">
-                        <div class="textfield text-field__normal pd-2">
+                        <div
+                            class="textfield text-field__normal pd-2"
+                            style="margin-top: 22px"
+                        >
                             <div class="normal-text-field__label">
                                 <span class="normal-text-field__label--text">
-                                    Địa chỉ
+                                    nơi cấp
                                 </span>
                             </div>
                             <div class="normal-text-field__input display_block">
                                 <input
-                                    class="normal-text-field__input--text"
+                                    class="normal-text-field__input--text data-picker__identityPlace"
                                     type="text"
-                                    placeholder="VD: số 82, Duy Tân, Dịch Vọng, Cầu Giấy, Hà Nội"
-                                    v-model="this.Employee.address"
+                                    v-model="this.Employee.identityPlace"
                                 />
 
                                 <div
@@ -1112,235 +822,243 @@
                             </span>
                         </div>
                     </div>
-                    <div class="employee-addition__bottom-contact">
-                        <div class="employee_addition-input-wrapper">
-                            <div class="textfield text-field__normal pd-2">
-                                <div class="normal-text-field__label">
-                                    <span
-                                        class="normal-text-field__label--text"
-                                    >
-                                        ĐT di động
-                                    </span>
-                                </div>
-                                <div
-                                    class="normal-text-field__input display_block"
-                                >
-                                    <input
-                                        class="normal-text-field__input--text telephone-number__data-input"
-                                        type="text"
-                                    />
+                </div>
+            </div>
+            <div class="employee-addition__bottom">
+                <div style="display: flex">
+                    <div class="textfield text-field__normal pd-2">
+                        <div class="normal-text-field__label">
+                            <span class="normal-text-field__label--text">
+                                Địa chỉ
+                            </span>
+                        </div>
+                        <div class="normal-text-field__input display_block">
+                            <input
+                                class="normal-text-field__input--text"
+                                type="text"
+                                placeholder="VD: số 82, Duy Tân, Dịch Vọng, Cầu Giấy, Hà Nội"
+                                v-model="this.Employee.address"
+                            />
 
-                                    <div
-                                        style="display: none"
-                                        class="normal-text-field__icon--result"
-                                    >
-                                        <i
-                                            class="icofont-check-circled normal-text-field__icon--icon"
-                                        ></i>
-                                    </div>
-                                </div>
-                                <span
-                                    style="display: none"
-                                    class="normal-text-field__respond--text"
-                                >
-                                    Tên trường không được để trống
-                                </span>
+                            <div
+                                style="display: none"
+                                class="normal-text-field__icon--result"
+                            >
+                                <i
+                                    class="icofont-check-circled normal-text-field__icon--icon"
+                                ></i>
                             </div>
                         </div>
-                        <div class="employee_addition-input-wrapper">
-                            <div class="textfield text-field__normal pd-2">
-                                <div class="normal-text-field__label">
-                                    <span
-                                        class="normal-text-field__label--text"
-                                    >
-                                        ĐT cố địng
-                                    </span>
-                                </div>
-                                <div
-                                    class="normal-text-field__input display_block"
-                                >
-                                    <input
-                                        class="normal-text-field__input--text landline__data-input"
-                                        type="text"
-                                        v-model="this.Employee.phoneNumber"
-                                    />
-
-                                    <div
-                                        style="display: none"
-                                        class="normal-text-field__icon--result"
-                                    >
-                                        <i
-                                            class="icofont-check-circled normal-text-field__icon--icon"
-                                        ></i>
-                                    </div>
-                                </div>
-                                <span
-                                    style="display: none"
-                                    class="normal-text-field__respond--text"
-                                >
-                                    Tên trường không được để trống
+                        <span
+                            style="display: none"
+                            class="normal-text-field__respond--text"
+                        >
+                            Tên trường không được để trống
+                        </span>
+                    </div>
+                </div>
+                <div class="employee-addition__bottom-contact">
+                    <div class="employee_addition-input-wrapper">
+                        <div class="textfield text-field__normal pd-2">
+                            <div class="normal-text-field__label">
+                                <span class="normal-text-field__label--text">
+                                    ĐT di động
                                 </span>
                             </div>
-                        </div>
-                        <div class="employee_addition-input-wrapper">
-                            <div class="textfield text-field__normal pd-2">
-                                <div class="normal-text-field__label">
-                                    <span
-                                        class="normal-text-field__label--text"
-                                    >
-                                        Email
-                                    </span>
-                                </div>
-                                <div
-                                    class="normal-text-field__input display_block"
-                                >
-                                    <input
-                                        class="normal-text-field__input--text email__data-input"
-                                        type="text"
-                                        m-model="this.Employee.email"
-                                    />
+                            <div class="normal-text-field__input display_block">
+                                <input
+                                    class="normal-text-field__input--text telephone-number__data-input"
+                                    type="text"
+                                />
 
-                                    <div
-                                        style="display: none"
-                                        class="normal-text-field__icon--result"
-                                    >
-                                        <i
-                                            class="icofont-check-circled normal-text-field__icon--icon"
-                                        ></i>
-                                    </div>
-                                </div>
-                                <span
+                                <div
                                     style="display: none"
-                                    class="normal-text-field__respond--text"
+                                    class="normal-text-field__icon--result"
                                 >
-                                    Tên trường không được để trống
-                                </span>
+                                    <i
+                                        class="icofont-check-circled normal-text-field__icon--icon"
+                                    ></i>
+                                </div>
                             </div>
+                            <span
+                                style="display: none"
+                                class="normal-text-field__respond--text"
+                            >
+                                Tên trường không được để trống
+                            </span>
                         </div>
                     </div>
-                    <div class="employee-addition__bottom-contact">
-                        <div class="employee_addition-input-wrapper">
-                            <div class="textfield text-field__normal pd-2">
-                                <div class="normal-text-field__label">
-                                    <span
-                                        class="normal-text-field__label--text"
-                                    >
-                                        Tải khoản ngân hàng
-                                    </span>
-                                </div>
-                                <div
-                                    class="normal-text-field__input display_block"
-                                >
-                                    <input
-                                        class="normal-text-field__input--text bank-account__data-input"
-                                        type="text"
-                                        v-model="
-                                            this.Employee.bankAccountNumber
-                                        "
-                                    />
-
-                                    <div
-                                        style="display: none"
-                                        class="normal-text-field__icon--result"
-                                    >
-                                        <i
-                                            class="icofont-check-circled normal-text-field__icon--icon"
-                                        ></i>
-                                    </div>
-                                </div>
-                                <span
-                                    style="display: none"
-                                    class="normal-text-field__respond--text"
-                                >
-                                    Tên trường không được để trống
+                    <div class="employee_addition-input-wrapper">
+                        <div class="textfield text-field__normal pd-2">
+                            <div class="normal-text-field__label">
+                                <span class="normal-text-field__label--text">
+                                    ĐT cố địng
                                 </span>
                             </div>
+                            <div class="normal-text-field__input display_block">
+                                <input
+                                    class="normal-text-field__input--text landline__data-input"
+                                    type="text"
+                                    v-model="this.Employee.phoneNumber"
+                                />
+
+                                <div
+                                    style="display: none"
+                                    class="normal-text-field__icon--result"
+                                >
+                                    <i
+                                        class="icofont-check-circled normal-text-field__icon--icon"
+                                    ></i>
+                                </div>
+                            </div>
+                            <span
+                                style="display: none"
+                                class="normal-text-field__respond--text"
+                            >
+                                Tên trường không được để trống
+                            </span>
                         </div>
-                        <div class="employee_addition-input-wrapper">
-                            <div class="textfield text-field__normal pd-2">
-                                <div class="normal-text-field__label">
-                                    <span
-                                        class="normal-text-field__label--text"
-                                    >
-                                        Tên ngân hàng
-                                    </span>
-                                </div>
-                                <div
-                                    class="normal-text-field__input display_block"
-                                >
-                                    <input
-                                        class="normal-text-field__input--text bank-name__data-input"
-                                        type="text"
-                                        v-model="this.Employee.bankName"
-                                    />
-
-                                    <div
-                                        style="display: none"
-                                        class="normal-text-field__icon--result"
-                                    >
-                                        <i
-                                            class="icofont-check-circled normal-text-field__icon--icon"
-                                        ></i>
-                                    </div>
-                                </div>
-                                <span
-                                    style="display: none"
-                                    class="normal-text-field__respond--text"
-                                >
-                                    Tên trường không được để trống
+                    </div>
+                    <div class="employee_addition-input-wrapper">
+                        <div class="textfield text-field__normal pd-2">
+                            <div class="normal-text-field__label">
+                                <span class="normal-text-field__label--text">
+                                    Email
                                 </span>
                             </div>
-                        </div>
-                        <div class="employee_addition-input-wrapper">
-                            <div class="textfield text-field__normal pd-2">
-                                <div class="normal-text-field__label">
-                                    <span
-                                        class="normal-text-field__label--text"
-                                    >
-                                        Chi nhánh
-                                    </span>
-                                </div>
-                                <div
-                                    class="normal-text-field__input display_block"
-                                >
-                                    <input
-                                        class="normal-text-field__input--text bank-branch__data-input"
-                                        type="text"
-                                        v-model="this.Employee.bankBranchName"
-                                    />
+                            <div class="normal-text-field__input display_block">
+                                <input
+                                    class="normal-text-field__input--text email__data-input"
+                                    type="text"
+                                    m-model="this.Employee.email"
+                                />
 
-                                    <div
-                                        style="display: none"
-                                        class="normal-text-field__icon--result"
-                                    >
-                                        <i
-                                            class="icofont-check-circled normal-text-field__icon--icon"
-                                        ></i>
-                                    </div>
-                                </div>
-                                <span
+                                <div
                                     style="display: none"
-                                    class="normal-text-field__respond--text"
+                                    class="normal-text-field__icon--result"
                                 >
-                                    Tên trường không được để trống
-                                </span>
+                                    <i
+                                        class="icofont-check-circled normal-text-field__icon--icon"
+                                    ></i>
+                                </div>
                             </div>
+                            <span
+                                style="display: none"
+                                class="normal-text-field__respond--text"
+                            >
+                                Tên trường không được để trống
+                            </span>
                         </div>
                     </div>
                 </div>
-                <!-- end information form -->
-                <div class="employee-addition__divide"></div>
-                <div class="employee-addition__footer">
-                    <div class="employee-addition__footer--left">
-                        <semi-button name="Hủy"></semi-button>
+                <div class="employee-addition__bottom-contact">
+                    <div class="employee_addition-input-wrapper">
+                        <div class="textfield text-field__normal pd-2">
+                            <div class="normal-text-field__label">
+                                <span class="normal-text-field__label--text">
+                                    Tải khoản ngân hàng
+                                </span>
+                            </div>
+                            <div class="normal-text-field__input display_block">
+                                <input
+                                    class="normal-text-field__input--text bank-account__data-input"
+                                    type="text"
+                                    v-model="this.Employee.bankAccountNumber"
+                                />
+
+                                <div
+                                    style="display: none"
+                                    class="normal-text-field__icon--result"
+                                >
+                                    <i
+                                        class="icofont-check-circled normal-text-field__icon--icon"
+                                    ></i>
+                                </div>
+                            </div>
+                            <span
+                                style="display: none"
+                                class="normal-text-field__respond--text"
+                            >
+                                Tên trường không được để trống
+                            </span>
+                        </div>
                     </div>
-                    <div class="employee-addition__footer--right">
-                        <semi-button name="Cất"></semi-button>
-                        <main-button
-                            name="Cất và Thêm"
-                            :eventButton="this.btnSaveTheEmployee"
-                        ></main-button>
+                    <div class="employee_addition-input-wrapper">
+                        <div class="textfield text-field__normal pd-2">
+                            <div class="normal-text-field__label">
+                                <span class="normal-text-field__label--text">
+                                    Tên ngân hàng
+                                </span>
+                            </div>
+                            <div class="normal-text-field__input display_block">
+                                <input
+                                    class="normal-text-field__input--text bank-name__data-input"
+                                    type="text"
+                                    v-model="this.Employee.bankName"
+                                />
+
+                                <div
+                                    style="display: none"
+                                    class="normal-text-field__icon--result"
+                                >
+                                    <i
+                                        class="icofont-check-circled normal-text-field__icon--icon"
+                                    ></i>
+                                </div>
+                            </div>
+                            <span
+                                style="display: none"
+                                class="normal-text-field__respond--text"
+                            >
+                                Tên trường không được để trống
+                            </span>
+                        </div>
                     </div>
+                    <div class="employee_addition-input-wrapper">
+                        <div class="textfield text-field__normal pd-2">
+                            <div class="normal-text-field__label">
+                                <span class="normal-text-field__label--text">
+                                    Chi nhánh
+                                </span>
+                            </div>
+                            <div class="normal-text-field__input display_block">
+                                <input
+                                    class="normal-text-field__input--text bank-branch__data-input"
+                                    type="text"
+                                    v-model="this.Employee.bankBranchName"
+                                />
+
+                                <div
+                                    style="display: none"
+                                    class="normal-text-field__icon--result"
+                                >
+                                    <i
+                                        class="icofont-check-circled normal-text-field__icon--icon"
+                                    ></i>
+                                </div>
+                            </div>
+                            <span
+                                style="display: none"
+                                class="normal-text-field__respond--text"
+                            >
+                                Tên trường không được để trống
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- end information form -->
+            <div class="employee-addition__divide"></div>
+            <div class="employee-addition__footer">
+                <div class="employee-addition__footer--left">
+                    <semi-button name="Hủy"></semi-button>
+                </div>
+                <div class="employee-addition__footer--right">
+                    <semi-button name="Cất"></semi-button>
+                    <main-button
+                        name="Cất và Thêm"
+                        :eventButton="this.btnSaveTheEmployee"
+                    ></main-button>
                 </div>
             </div>
         </div>
@@ -1356,7 +1074,9 @@
 
 <script>
 import axios from 'axios'
+import TextField from '../base/TextField.vue'
 export default {
+    components: { TextField },
     name: 'AddNewEmployee',
     data() {
         return {
@@ -1595,6 +1315,13 @@ export default {
 </script>
 
 <style scoped>
+.employee-addition__container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: calc(100% - 56px);
+}
 .employee-addition__footer--right {
     display: flex;
     padding-right: 12px;
@@ -1612,6 +1339,9 @@ export default {
     z-index: 10001;
 }
 .employee-addition-wrapper {
+    padding: 24px;
+    z-index: 101;
+    position: fixed;
     background-color: white;
     background-color: white;
     border-radius: 4px;
@@ -1708,6 +1438,7 @@ export default {
 .employee-addition__left-first {
     display: flex;
     align-items: center;
+    justify-content: space-between;
 }
 .display_block {
     width: 100%;
@@ -1769,17 +1500,6 @@ export default {
     top: calc(36px + 40px);
 }
 /* popup response */
-.popup-response-overlay {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    background-color: rgba(77, 77, 77, 0.486);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 .popup-response {
     background-color: white;
     border-radius: 4px;

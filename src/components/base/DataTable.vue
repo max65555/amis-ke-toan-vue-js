@@ -2,62 +2,113 @@
     <div class="main-content__data-table-context-wrapper">
         <div class="main-content__data-table-context">
             <table class="data-table__wrapper">
-                    <thead>
-                        <tr class=" data-table__header-line">
-                            <th class="data-table__header data-table__header--checkbox data-table__check-all-box">
-                                <div class="data-table__data-item" >
-                                    <main-check-box checkBox="1231www23"></main-check-box>
-                                </div>
-                            </th>
-                            <th class="data-table__header" v-for="(headerColumns,key) in nameOfColumns" :key="key">
-                                <div class="data-table__data-item">
-                                    <span class="data-table__header--text">
-                                        {{ headerColumns }}
-                                    </span>
-                                </div>
-                            </th>
-                            <th class="data-table__header main-content__function"
+                <thead>
+                    <tr class="data-table__header-line">
+                        <th
+                            class="data-table__header data-table__header--checkbox data-table__check-all-box"
+                        >
+                            <div class="data-table__data-item">
+                                <main-check-box
+                                    checkBox="1231www23"
+                                ></main-check-box>
+                            </div>
+                        </th>
+                        <th
+                            class="data-table__header"
+                            v-for="(headerColumns, index) in nameOfColumns"
+                            :key="index"
+                        >
+                            <div
+                                class="data-table__data-item"
+                                :style="{
+                                    'border-right':
+                                        index ==
+                                        Object.keys(nameOfColumns).length - 1
+                                            ? 'unset'
+                                            : '1px solid #e0e0e0',
+                                }"
                             >
-                                <div class="data-table__data-item">
-                                    Chức năng
-                                </div>
-                            </th>
-                        </tr>
-                    </thead> 
+                                <span class="data-table__header--text">
+                                    {{ headerColumns }}
+                                </span>
+                            </div>
+                        </th>
+                        <th class="data-table__header main-content__function">
+                            <div class="data-table__data-item">Chức năng</div>
+                        </th>
+                    </tr>
+                </thead>
                 <!--  start items  -->
                 <tbody>
-                    <tr v-for="(anRow,key) in dataArray" :key="key" class=" data-table__line">
-                        <td class="data-table__data-line data-table__header--checkbox">
-                            <div class="data-table__data-item">
-                                <main-check-box 
-                                :checkBox='anRow[IDField]'></main-check-box>
-                            </div>
-                        </td>
-                        <td class="data-table__data-line" v-for="(item,itemKey) in showField" :key="itemKey">
-                            <div class="data-table__data-item">
-                                {{anRow[item]}}
-                            </div>
-                        </td>
-                        <td class="data-table__data-line main-content__function"
-                        :style="{'z-index': this.isDropdownListShow && anRow[IDField]== this.currentIDOpenDropDownList ? '1' : '0'}"
+                    <tr
+                        v-for="(anRow, key) in dataArray"
+                        :key="key"
+                        class="data-table__line"
+                    >
+                        <td
+                            class="data-table__data-line data-table__header--checkbox"
                         >
-                            <div class="data-table__data-item function__container" >
-                                <link-button label="Sửa"
-                                @click-handler="UpdateAnRow(anRow[IDField])"
-                                ></link-button> 
+                            <div class="data-table__data-item">
+                                <main-check-box
+                                    :checkBox="anRow[IDField]"
+                                ></main-check-box>
+                            </div>
+                        </td>
+                        <td
+                            class="data-table__data-line"
+                            v-for="(item, index) in showField"
+                            :key="index"
+                        >
+                            <div
+                                class="data-table__data-item"
+                                :style="{
+                                    'border-right':
+                                        index ==
+                                        Object.keys(showField).length - 1
+                                            ? 'unset'
+                                            : '1px solid #e0e0e0',
+                                }"
+                            >
+                                {{ anRow[item] }}
+                            </div>
+                        </td>
+                        <td
+                            class="data-table__data-line main-content__function"
+                            :style="{
+                                'z-index':
+                                    this.isDropdownListShow &&
+                                    anRow[IDField] ==
+                                        this.currentIDOpenDropDownList
+                                        ? '1'
+                                        : '0',
+                            }"
+                        >
+                            <div
+                                class="data-table__data-item function__container"
+                            >
+                                <link-button
+                                    label="Sửa"
+                                    @click-handler="UpdateAnRow(anRow[IDField])"
+                                ></link-button>
                                 <div class="data-table__button-dropdown-edit">
-                                    <dropdown-list 
-                                    :isOnlyIcon="true"
-                                    :item="functionButtonList"
-                                    @deleteRow='DeleteAnRow(anRow[IDField])'
-                                    @watchIsDropdownListValue="getDropdownList"
-                                    @watchId="getIdCurrentRowByOpenDropDown(anRow[IDField])"
+                                    <dropdown-list
+                                        :isOnlyIcon="true"
+                                        :item="functionButtonList"
+                                        @deleteRow="DeleteAnRow(anRow[IDField])"
+                                        @watchIsDropdownListValue="
+                                            getDropdownList
+                                        "
+                                        @watchId="
+                                            getIdCurrentRowByOpenDropDown(
+                                                anRow[IDField]
+                                            )
+                                        "
                                     ></dropdown-list>
                                 </div>
                             </div>
                         </td>
                     </tr>
-                </tbody> 
+                </tbody>
             </table>
         </div>
     </div>
@@ -65,42 +116,42 @@
 
 <script>
 export default {
-    name: "DataTable",
+    name: 'DataTable',
     props: {
         IDField: {
             type: String,
-            default: "",
-            required:true
+            default: '',
+            required: true,
         },
         nameOfColumns: {
             type: Array,
             default: () => [],
-            required:true,
+            required: true,
         },
         dataArray: {
-            type:Array,
-            default: ()=>[],
-            required:true
+            type: Array,
+            default: () => [],
+            required: true,
         },
         showField: {
             type: Array,
-            default: ()=> [],
-            required: true
-        }
+            default: () => [],
+            required: true,
+        },
     },
     data() {
         return {
             functionButtonList: [
-                {mean: "ngưng sử dụng", function: ""},
-                {mean: "xóa", function: "deleteRow" },
-                {mean:"nhân bản",function:""}
+                { mean: 'ngưng sử dụng', function: '' },
+                { mean: 'xóa', function: 'deleteRow' },
+                { mean: 'nhân bản', function: '' },
             ],
-            isDropdownListShow:false,
+            isDropdownListShow: false,
             currentIDOpenDropDownList: '',
         }
     },
     mounted() {
-        console.log(this.dataArray);
+        console.log(this.dataArray)
     },
     methods: {
         /**
@@ -108,27 +159,24 @@ export default {
          * Author: toanlk (2/1/2023)
          */
         DeleteAnRow(fieldID) {
-            console.log("delete " + fieldID);
+            console.log('delete ' + fieldID)
         },
         /**
          * update an record by id
          * Author: toanlk (2/1/2023)
          */
         UpdateAnRow(fieldID) {
-            console.log("update" + fieldID);
+            console.log('update' + fieldID)
         },
         getDropdownList(isDropdownListShow) {
-            this.isDropdownListShow = isDropdownListShow;
-            console.log(this.isDropdownListShow);
-            
+            this.isDropdownListShow = isDropdownListShow
+            console.log(this.isDropdownListShow)
         },
         getIdCurrentRowByOpenDropDown(currentID) {
-            this.currentIDOpenDropDownList = currentID;
-            console.log(this.currentIDOpenDropDownList);
-
-        }
+            this.currentIDOpenDropDownList = currentID
+            console.log(this.currentIDOpenDropDownList)
+        },
     },
-
 }
 </script>
 
@@ -213,7 +261,7 @@ th {
     /* border-bottom: unset;
 	background-color: #f5f5f5;
 	*/
-    border-left: unset !important;
+    border-left: 1px solid #e0e0e0;
 }
 .data-table__header > .data-table__data-item {
     /* padding:0; */
@@ -249,12 +297,11 @@ th {
 .data-table__button-edit {
     color: #00a9f2;
 }
-.data-table__header-line{
-
+.data-table__header-line {
 }
-.data-table__check-all-box{
-    background-color:#f5f5f5 !important;
-    z-index:10001 !important;
+.data-table__check-all-box {
+    background-color: #f5f5f5 !important;
+    z-index: 10001 !important;
 }
 .data-table__button-dropdown-edit {
     position: relative;
@@ -286,7 +333,7 @@ th {
 }
 .data-table__header {
     position: sticky;
-    z-index:100;
+    z-index: 100;
     top: 0;
     text-align: left;
     white-space: nowrap;
@@ -326,7 +373,7 @@ th {
 }
 .data-table__header--checkbox {
     background-color: #f5f5f5;
-    z-index:10000;  
+    z-index: 10000;
     position: sticky;
     left: 0;
     top: 0;
@@ -431,13 +478,13 @@ data-table__data-item	height: 100%; */
 .data-table__selected-row {
     background-color: #f1ffef;
 }
-.data-table__line:hover .data-table__data-item{
-    background-color:#F2F2F2;
+.data-table__line:hover .data-table__data-item {
+    background-color: #f2f2f2;
 }
-.function__container{
-    display:flex;
+.function__container {
+    display: flex;
 
-    justify-content:center;
-    align-items:center;
+    justify-content: center;
+    align-items: center;
 }
 </style>
