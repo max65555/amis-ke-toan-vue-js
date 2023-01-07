@@ -4,13 +4,18 @@
             {{ label }}
             <span style="color: red" v-if="isRequiredField">*</span>
         </span>
-        <div class="dropwdown__input">
+        <div
+            class="dropdown__input"
+            :class="{
+                'combo-box--focus-on': this.isComboBoxOpen,
+            }"
+        >
             <input
-                class="combo-box__input-text add-new__department--input"
+                class="combo-box__input-text"
                 placeholder=""
                 type="text"
                 required
-                :value="itemValue"
+                :value="currentSelectedItem[keyName]"
             />
             <button style="width: auto" @click="this.ShowAndHideDropDownList">
                 <div
@@ -20,10 +25,7 @@
                 </div>
             </button>
         </div>
-        <div
-            class="combo-box-list__list add-new__department-combo-box-list--list"
-            v-if="this.isComboBoxOpen"
-        >
+        <div class="combo-box-list__list" v-if="this.isComboBoxOpen">
             <div class="combo-box-list--placeholder-item">
                 <span class="combo-box-list--placeholder-text">
                     - chọn giá trị -
@@ -35,10 +37,10 @@
                 ></i>
             </div>
             <div
-                class="combo-box-list__list-item add-new__department-combo-box-item"
+                class="combo-box-list__list-item"
                 v-for="(item, key) in comboBoxItem"
                 :key="key"
-                :Value="item.value"
+                :Value="item[valueName]"
             >
                 <button
                     style="text-align: left"
@@ -46,10 +48,10 @@
                     class="combo-box__button-item"
                 >
                     <span class="combo-box-list__list-item-text">{{
-                        item.key
+                        item[keyName]
                     }}</span>
                     <i
-                        v-if="item.value == currentSelectedItem.value"
+                        v-if="item[valueName] == currentSelectedItem[valueName]"
                         class="icofont-check-alt combo-box-list--placeholder-icon"
                     ></i>
                 </button>
@@ -87,6 +89,16 @@ export default {
             default: () => [],
             required: true,
         },
+        keyName: {
+            type: String,
+            default: '',
+            required: true,
+        },
+        valueName: {
+            type: String,
+            default: '',
+            required: true,
+        },
     },
     data() {
         return {
@@ -105,10 +117,12 @@ export default {
         },
         SelectedItem(item) {
             try {
-                this.itemValue = item.key
                 this.currentSelectedItem = item
                 this.isComboBoxOpen = false
-                this.$emit('update:modelValue', this.currentSelectedItem)
+                this.$emit(
+                    'update:modelValue',
+                    this.currentSelectedItem[this.valueName]
+                )
             } catch (e) {
                 console.log(e)
             }
@@ -129,7 +143,8 @@ export default {
     color: #1f1f1f;
     margin-bottom: 8px;
 }
-.dropwdown__input {
+.dropdown__input {
+    border: 1px solid #e0e0e0;
     width: 100%;
     height: 36px;
     display: flex;
@@ -138,22 +153,20 @@ export default {
     background-color: #ffffff;
     border-radius: 3px;
     box-sizing: border;
-    border: 1px solid #50b83c;
+
     z-index: 1;
     box-sizing: border-box;
 }
 .combo-box__input-text {
     white-space: nowrap;
     overflow: hidden;
-    /* max-width: 140px; */
     font-size: 14px;
-    padding: 0px 12px;
+    padding: 4px 12px;
     font-weight: 400;
     color: black;
     text-align: left;
     border: unset;
     outline: unset;
-    /* background-color: red; */
     flex: 1;
     width: 100%;
 }
@@ -253,5 +266,8 @@ export default {
     text-align: left;
     color: #1f1f1f;
     font-weight: 400;
+}
+.combo-box--focus-on {
+    border: 1px solid #50b83c;
 }
 </style>

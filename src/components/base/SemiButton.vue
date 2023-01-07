@@ -1,55 +1,63 @@
 <template>
-    <button @mousedown="mouseDownHandler" @mouseup="mouseUp" 
-        @mouseleave="mouseLeave"
-        @mouseenter="mouseEnter"
-        class="button__semi btn"
-        :class="[{ 'btn--pressed': isPressing }, { 'btn--hover': isHover }, {'btn--disabled':isDisabled
-        }]" :disabled="this.isDisabled">
+    <div class="btn__container">
+        <button
+            @mousedown="mouseDownHandler"
+            @mouseup="mouseUp"
+            @mouseleave="mouseLeave"
+            @mouseenter="mouseEnter"
+            class="button__semi btn"
+            :class="[
+                { 'btn--pressed': isPressing },
+                { 'btn--hover': isHover },
+                { 'btn--disabled': isDisabled },
+            ]"
+            :disabled="this.isDisabled"
+        >
             <span class="button__semi--text">{{ label }}</span>
         </button>
+    </div>
 </template>
 
 <script>
 export default {
     name: 'SemiButton',
-   props: {
+    props: {
         label: {
             type: String,
             required: false,
         },
         isDisabled: {
             typ: Boolean,
-            required: true
-        }
+            required: true,
+        },
     },
-    data(){
-        return{
-            isPressing:false,
+    data() {
+        return {
+            isPressing: false,
             isHover: false,
-            
         }
     },
     methods: {
         mouseDownHandler() {
             this.isHover = false
-            this.isPressing = true;
+            this.isPressing = true
         },
         mouseUp() {
-            this.isPressing = false;
+            this.isPressing = false
             this.isHover = true
-            this.clickHandler();
+            this.clickHandler()
         },
         mouseLeave() {
-            this.isPressing = false;
+            this.isPressing = false
             this.isHover = false
         },
         mouseEnter() {
-            this.isHover = true;
+            this.isHover = true
         },
         clickHandler() {
-            this.$emit("click-handler");  
-        }
-    }
+            this.$emit('click-handler')
+        },
+    },
 }
 </script>
 
@@ -77,21 +85,18 @@ export default {
     color: inherit;
     text-align: center;
     white-space: nowrap;
-
 }
-.btn--disabled{
-    opacity:56%;
+.btn--disabled {
+    opacity: 56%;
 }
 .btn--hover {
     cursor: pointer;
     /* background-color: #5dc748 !important; */
-    border-color:#50b83c !important;
-    color:#50b83c !important;
+    border-color: #50b83c !important;
+    color: #50b83c !important;
 }
 
-.btn--pressed{
+.btn--pressed {
     background-color: #ebebeb;
-
 }
-
 </style>

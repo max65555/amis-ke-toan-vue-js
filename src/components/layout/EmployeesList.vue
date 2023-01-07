@@ -3,8 +3,8 @@
         <div class="main-content__header">
             <span class="main-content__name"> Nhân Viên </span>
             <main-button
-                name="Thêm mới nhân viên"
-                :eventButton="ShowAddNewEmployeeForm"
+                label="Thêm mới nhân viên"
+                @click-handler="ShowAddNewEmployeeForm"
             >
             </main-button>
         </div>
@@ -13,172 +13,130 @@
                 <div class="main-content__data-table-wrapper">
                     <div class="main-content__data-table-function">
                         <div class="main-content__data-table-delete-employees">
-                            <div>
-                                <!-- TODO: add semi button -->
-                                <semi-button
-                                    name="xóa"
-                                    :eventButton="this.DeleteEmployees"
-                                ></semi-button>
-                            </div>
+                            <!-- TODO: delete hang loat -->
                         </div>
-                        <!-- TODO:search text field -->
-                        <text-field></text-field>
                         <div class="table__function-reload">
-                            <button @click="this.loadAllEmployee()">
-                                <div class="table-function-reload--icon"></div>
+                            <text-field
+                                :isContainLabel="false"
+                                :isContainIcon="true"
+                                iconBackgroundPosition="-991px -358px;"
+                            ></text-field>
+                            <button class="table-function-reload--icon">
+                                <div
+                                    class="table-function-reload-background"
+                                ></div>
                             </button>
                         </div>
                     </div>
-                        <div>
-                            <!-- data table start -->
-
-                           <data-table
+                    <div>
+                        <data-table
                             :dataArray="employeeArray"
-                             :nameOfColumns="nameOfColumns" 
-                            :showField = "showField"
+                            :nameOfColumns="nameOfColumns"
+                            :showField="showField"
                             IDField="EmployeeId"
-                            ></data-table>
-                            <div class="data-table__footer-container">
-                                <div>
-                                    <div class="data-table__footer">
-                                        <div class="data-table__footer--left">
-                                            <p>Tổng:&nbsp;</p>
-                                            <b>4</b>
-                                            <p>&nbsp;số bản ghi</p>
+                            @update-row="updateEmployeeHandler"
+                            @delete-row="deleteEmployeeHandler"
+                        ></data-table>
+                        <div class="data-table__footer-container">
+                            <div>
+                                <div class="data-table__footer">
+                                    <div class="data-table__footer--left">
+                                        <p>Tổng:&nbsp;</p>
+                                        <b>4</b>
+                                        <p>&nbsp;số bản ghi</p>
+                                    </div>
+                                    <div class="data-table__footer--right">
+                                        <div
+                                            class="data-table__footer-dropdownList"
+                                        >
+                                            <dropdown-list
+                                                :isOnlyIcon="false"
+                                                :item="pagingItem"
+                                                placeholder="0 bản ghi trên 1 trang"
+                                            ></dropdown-list>
                                         </div>
-                                        <div class="data-table__footer--right">
+
+                                        <div
+                                            class="data-table__footer--prev-next"
+                                        >
                                             <div
-                                                class="dropdown-list main-content__table-footer-pages-selected"
+                                                class="data-table__footer-nav-icon"
+                                                style="
+                                                    margin-right: 16px;
+                                                    color: gray;
+                                                    padding-left: 12px;
+                                                "
+                                            >
+                                                Trước
+                                            </div>
+                                            <div
+                                                class="main-content__footer-nav-pages"
                                             >
                                                 <div
-                                                    class="dropwdown__input dropdown-list__normal-status"
+                                                    class="main-content__footer-nav-pages--item main-content__footer-nav-selected-page"
+                                                    style="font-weight: 900"
                                                 >
-                                                    <span
-                                                        class="dropdown__input-text"
-                                                    >
-                                                        20 bản ghi trên 1 trang
-                                                    </span>
-                                                    <div
-                                                        id="show-pages-btn"
-                                                        class="dropdown__input-icon"
-                                                    >
-                                                        <i
-                                                            class="icofont-rounded-down dropdown__i--icon"
-                                                        ></i>
-                                                    </div>
+                                                    1
                                                 </div>
                                                 <div
-                                                    id="show-pages-list"
-                                                    class="dropdown-list__list show-pages-list"
-                                                    style="
-                                                        display: none;
-                                                        width: 100%;
-                                                    "
+                                                    class="main-content__footer-nav-pages--item"
                                                 >
-                                                    <div
-                                                        class="dropdown-list__list-item"
-                                                    >
-                                                        <span
-                                                            class="dropdown-list__list-item-text"
-                                                        >
-                                                            10 bản ghi trên 1
-                                                            trang
-                                                        </span>
-                                                    </div>
-                                                    <div
-                                                        class="dropdown-list__list-item"
-                                                    >
-                                                        <span
-                                                            class="dropdown-list__list-item-text"
-                                                        >
-                                                            20 bản ghi trên 1
-                                                            trang
-                                                        </span>
-                                                    </div>
-                                                    <div
-                                                        class="dropdown-list__list-item"
-                                                    >
-                                                        <span
-                                                            class="dropdown-list__list-item-text"
-                                                        >
-                                                            30 bản ghi trên 1
-                                                            trang
-                                                        </span>
-                                                    </div>
+                                                    2
+                                                </div>
+                                                <div
+                                                    class="main-content__footer-nav-pages--item"
+                                                >
+                                                    3
                                                 </div>
                                             </div>
                                             <div
-                                                class="data-table__footer--prev-next"
+                                                class="data-table__footer-nav-icon"
                                             >
-                                                <div
-                                                    class="data-table__footer-nav-icon"
-                                                    style="
-                                                        margin-right: 16px;
-                                                        color: gray;
-                                                    "
-                                                >
-                                                    Trước
-                                                </div>
-                                                <div
-                                                    class="main-content__footer-nav-pages"
-                                                >
-                                                    <div
-                                                        class="main-content__footer-nav-pages--item main-content__footer-nav-selected-page"
-                                                        style="font-weight: 900"
-                                                    >
-                                                        1
-                                                    </div>
-                                                    <div
-                                                        class="main-content__footer-nav-pages--item"
-                                                    >
-                                                        2
-                                                    </div>
-                                                    <div
-                                                        class="main-content__footer-nav-pages--item"
-                                                    >
-                                                        3
-                                                    </div>
-                                                </div>
-                                                <div
-                                                    class="data-table__footer-nav-icon"
-                                                >
-                                                    Sau
-                                                </div>
+                                                Sau
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <!-- data table end -->
-                            <popup-notify
-                                v-show="this.ispopupConfirmDeleteShow"
-                                :notifyMessage="this.notifyMessage"
-                                :typeNotify="this.typeNotify"
-                                :semiButtonAction="
-                                    this.cancelDeleteConfirmAction
-                                "
-                                :mainButtonAction="
-                                    this.isDeleteEmployeesAction
-                                        ? this
-                                              .confirmDeleteEmployeesConfirmAction
-                                        : this.confirmDeleteConfirmAction
-                                "
-                            ></popup-notify>
                         </div>
+                        <!-- data table end -->
+                        <!-- <popup-notify
+                            v-show="this.ispopupConfirmDeleteShow"
+                            :notifyMessage="this.notifyMessage"
+                            :typeNotify="this.typeNotify"
+                            :semiButtonAction="this.cancelDeleteConfirmAction"
+                            :mainButtonAction="
+                                this.isDeleteEmployeesAction
+                                    ? this.confirmDeleteEmployeesConfirmAction
+                                    : this.confirmDeleteConfirmAction
+                            "
+                        ></popup-notify> -->
                     </div>
                 </div>
             </div>
         </div>
-    
-    
+    </div>
+
     <!-- pop up  -->
     <!-- TODO: turn this one on -->
     <add-new-employee
-        v-if="this.isAddNewEmployeeShowingUp" 
-        @onClose="ShowAddNewEmployeeForm"
-        :isUpdate="this.isUpdateForm"
-        :EmployeeBeUpdated="this.updateEmployee"
+        v-if="this.isAddNewEmployeeShowingUp"
+        :isUpdate="isUpdateForm"
+        :EmployeeBeUpdated="updateEmployee"
+        @close-handler="isAddNewEmployeeShowingUp = !isAddNewEmployeeShowingUp"
     ></add-new-employee>
+    <popup-notify
+        v-if="popUpNotify.isPopupNotifyShowingUp"
+        :headerMessage="popUpNotify.headerMessage"
+        :mainMessage="popUpNotify.mainMessage"
+        :semiButtonLabel="popUpNotify.semiButtonLabel"
+        :mainButtonLabel="popUpNotify.mainButtonLabel"
+        @semi-button-handler="
+            popUpNotify.isPopupNotifyShowingUp =
+                !popUpNotify.isPopupNotifyShowingUp
+        "
+        @main-button-handler="confirmDeleteConfirmAction"
+    ></popup-notify>
 </template>
 
 <script>
@@ -198,14 +156,45 @@ export default {
             updateEmployee: {},
             isLoadingProcess: false,
             dropdownListOpen: false,
-            ispopupConfirmDeleteShow: false,
-            notifyMessage: '',
-            typeNotify: '',
+            popUpNotify: {
+                headerMessage: '',
+                mainMessage: '',
+                semiButtonLabel: '',
+                mainButtonLabel: '',
+                isPopupNotifyShowingUp: false,
+            },
             deleteEmployeesCollection: [],
             isDeleteEmployeesAction: false,
             isAllCheckChecked: false,
-            nameOfColumns: ["Mã nhân viên", "Tên nhân viên", "Giới tính", "Ngày sinh", "Số CMND", "Chức danh", "Tên đơn vị", "Số tài khoản", "Tên ngân hàng", "Chi nhánh tài khoản ngân hàng"],
-            showField: ["EmployeeCode", "EmployeeName", "Gender", "DateOfBirth", "IdentityNumber", "PositionId", "DepartmentId", "BankAccountNumber", "BankName", "BankBranch"]
+            nameOfColumns: [
+                'Mã nhân viên',
+                'Tên nhân viên',
+                'Giới tính',
+                'Ngày sinh',
+                'Số CMND',
+                'Chức danh',
+                'Tên đơn vị',
+                'Số tài khoản',
+                'Tên ngân hàng',
+                'Chi nhánh tài khoản ngân hàng',
+            ],
+            showField: [
+                'EmployeeCode',
+                'EmployeeName',
+                'Gender',
+                'DateOfBirth',
+                'IdentityNumber',
+                'PositionId',
+                'DepartmentId',
+                'BankAccountNumber',
+                'BankName',
+                'BankBranch',
+            ],
+            pagingItem: [
+                { mean: '10 bản ghi trên 1 trang', function: 'test1' },
+                { mean: '20 bản ghi trên 1 trang', function: 'test1' },
+                { mean: '30 bản ghi trên 1 trang', function: 'test1' },
+            ],
         }
     },
     methods: {
@@ -215,7 +204,7 @@ export default {
          */
         loadAllEmployee: function () {
             try {
-                this.employeeArray =[];
+                this.employeeArray = []
                 axios
                     .get('https://amis.manhnv.net/api/v1/Employees')
                     .then((res) => {
@@ -235,13 +224,12 @@ export default {
          * Author: toanlk(25/12/2022)
          */
         ShowAddNewEmployeeForm: function () {
-            try{
-
+            try {
                 this.isUpdateForm = false
+                this.updateEmployee = {}
                 this.isAddNewEmployeeShowingUp = !this.isAddNewEmployeeShowingUp
-            }
-            catch(e){
-                console.log(e);
+            } catch (e) {
+                console.log(e)
             }
         },
         /**
@@ -249,14 +237,12 @@ export default {
          * Author: Toanlk(25/12/2022)
          */
         UpdateButtonHandler(employee) {
-            try{
-
+            try {
                 this.isUpdateForm = true
                 this.updateEmployee = employee
                 this.isAddNewEmployeeShowingUp = true
-            }
-            catch(e){
-                console.log(e);
+            } catch (e) {
+                console.log(e)
             }
         },
         /**
@@ -264,31 +250,28 @@ export default {
          * Author: Toanlk(25/12/2022)
          */
         ShowDropDownList(employeeID) {
-            try{
-
-                this.dropdownListOpen = !this.dropdownListOpen; 
+            try {
+                this.dropdownListOpen = !this.dropdownListOpen
                 this.currentRowDropDownListOpen = employeeID
-                
+            } catch (e) {
+                console.log(e)
             }
-            catch(e){
-                console.log(e);
-            }
-            },
+        },
 
         /**
          * delete an employee action
          * Author: Toanlk(25/12/2022)
          */
         DeleteConfirmAction(employeeID) {
-            try{
-                console.log(employeeID);
-                this.isDeleteEmployeesAction = false
-                this.dropdownListOpen = false
-                this.notifyMessage = 'Bạn có chắc chắn muốn xóa không ?'
-                this.typeNotify = 'question'
-                this.ispopupConfirmDeleteShow = true
-            }
-            catch(e){
+            try {
+                console.log(employeeID)
+                this.currentRowDropDownListOpen = employeeID
+                this.popUpNotify.headerMessage = 'Xác nhận'
+                this.popUpNotify.mainMessage = 'Bạn chắc chắn muốn xóa không ?'
+                this.popUpNotify.semiButtonLabel = 'Đóng'
+                this.popUpNotify.mainButtonLabel = 'Xóa'
+                this.popUpNotify.isPopupNotifyShowingUp = true
+            } catch (e) {
                 console.log(e)
             }
         },
@@ -297,11 +280,9 @@ export default {
          * Author: Toanlk(25/12/2022)
          */
         cancelDeleteConfirmAction() {
-            try{
-
+            try {
                 this.ispopupConfirmDeleteShow = false
-            }
-            catch(e){
+            } catch (e) {
                 console.log(e)
             }
         },
@@ -310,43 +291,39 @@ export default {
          * Author: Toanlk(25/12/2022)
          */
         confirmDeleteConfirmAction() {
-            try{
-
-                this.ispopupConfirmDeleteShow = false
+            try {
+                this.popUpNotify.isPopupNotifyShowingUp =
+                    !this.popUpNotify.isPopupNotifyShowingUp
                 console.log('delete action' + this.currentRowDropDownListOpen)
                 axios
                     .delete(
                         'https://amis.manhnv.net/api/v1/Employees/' +
-                        this.currentRowDropDownListOpen
+                            this.currentRowDropDownListOpen
                     )
                     .then((res) => {
-                        console.log(res);
+                        console.log(res)
                         this.loadAllEmployee()
                     })
                     .catch((err) => {
                         console.log(err)
-                    });
-            }
-            catch(e){
+                    })
+            } catch (e) {
                 console.log(e)
             }
-
-            },
-            /**
+        },
+        /**
          * delete employees action
          * Author: Toanlk(25/12/2022)
          */
         DeleteEmployees() {
-            try{
-
+            try {
                 console.log(this.deleteEmployeesCollection)
                 this.isDeleteEmployeesAction = true
                 this.notifyMessage = 'Bạn có chắc chắn muốn xóa không ?'
                 this.typeNotify = 'question'
                 this.ispopupConfirmDeleteShow = true
-            }
-            catch(e){
-                console.log(e);
+            } catch (e) {
+                console.log(e)
             }
         },
         /**
@@ -354,68 +331,57 @@ export default {
          * Author: Toanlk(25/12/2022)
          */
         confirmDeleteEmployeesConfirmAction() {
-            try{
-
+            try {
                 console.log('xoa hang loat')
                 this.ispopupConfirmDeleteShow = false
                 this.deleteEmployeesCollection.forEach((item) => {
                     axios
-                    .delete('https://amis.manhnv.net/api/v1/Employees/' + item)
-                    .then((res) => {
-                        this.loadAllEmployee()
-                        console.log(res)
-                    })
-                    .catch((err) => {
-                        console.log(err)
-                    })
+                        .delete(
+                            'https://amis.manhnv.net/api/v1/Employees/' + item
+                        )
+                        .then((res) => {
+                            this.loadAllEmployee()
+                            console.log(res)
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                        })
                 })
-            }
-            catch(e){
-                console.log(e);
-            }
-            },
-        /**
-         * date Formatter
-         * Author: toanlk(25/12/2022)
-         * @param {*} date
-         */
-        dateTimeFormatter(date) {
-            try{
-
-                date += ''
-                if (date == 'null') {
-                    return ''
-                }
-                let result = date.slice(0, 10)
-                return result
-            }
-            catch(e){
+            } catch (e) {
                 console.log(e)
             }
         },
 
+        updateEmployeeHandler(EmployeeID) {
+            this.employeeArray.forEach((element) => {
+                if (element.EmployeeId == EmployeeID) {
+                    this.updateEmployee = element
+                }
+            })
+            this.isUpdateForm = true
+            this.isAddNewEmployeeShowingUp = true
+        },
+        deleteEmployeeHandler(EmployeeId) {
+            this.DeleteConfirmAction(EmployeeId)
+        },
     },
     created() {
         //render all employee
-        try{
+        try {
             this.loadAllEmployee()
-        }
-        catch(e){
-            console.log(e);
+        } catch (e) {
+            console.log(e)
         }
     },
 }
 </script>
 
 <style scoped>
-.popup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 100000;
+.main-content__data-table-wrapper {
+    padding: 12px;
+    background-color: white;
 }
+
 .main-content {
     background-color: #f4f5f7;
     padding: 24px 24px 0 24px;
@@ -435,19 +401,11 @@ export default {
     text-align: left;
 }
 
-
 .dropdown-list {
     width: 100%;
     position: relative;
 }
-.dropdown__label {
-    display: block;
-    font-size: 14px;
-    font-weight: 500;
-    text-align: left;
-    color: #1f1f1f;
-    margin-bottom: 8px;
-}
+
 .dropwdown__input {
     width: 100%;
     height: 36px;
@@ -461,9 +419,7 @@ export default {
     border: 1px solid #e0e0e0;
     z-index: 1;
 }
-.dropdown__input--normal {
-    border: 1px solid #e0e0e0;
-}
+
 .dropdown__input-text {
     white-space: nowrap;
     overflow: hidden;
@@ -481,18 +437,7 @@ export default {
     justify-content: center;
     align-items: center;
 }
-.dropdown__i--close-icon {
-    width: 16px;
-    height: 16px;
-    font-size: 16px;
-    color: gray;
-    margin-left: 8px;
-}
-.data-table__button-dropdown-edit {
-    height: 100%;
-    display: flex;
-    align-items: center;
-}
+
 .dropdown__i--icon {
     display: block;
     width: 16px;
@@ -502,15 +447,7 @@ export default {
     line-height: 2.2;
     padding: 0 8px 0px 8px;
 }
-.dropdown__text--error {
-    margin-top: 8px;
-}
-.dropdown__span--error {
-    font-size: 12px;
-    text-align: left;
-    color: #e61d1d;
-    font-weight: 400;
-}
+
 /* dropdown-list the List */
 .dropdown-list__list {
     overflow-y: overlay;
@@ -554,6 +491,7 @@ export default {
 /* dropw downlist */
 .data-table__footer-container {
     height: 48px;
+    padding-top: 8px;
     /* top: 0; */
 }
 .data-table__footer {
@@ -589,12 +527,7 @@ export default {
     align-items: center;
     justify-content: center;
 }
-.data-table__footer-nav-rounded-left {
-    font-size: 20px;
-}
-.data-table__footer-nav-rounded-right {
-    font-size: 20px;
-}
+
 /* end footer */
 .main-content__table-footer-pages-selected {
     margin-right: 28px;
@@ -616,32 +549,22 @@ export default {
 .show-pages-list {
     bottom: calc(100% + 1px);
 }
-.data-table__header--text {
-    background-color: #e0e0e0;
-    color: #e0e0e0;
-    padding: 4px 0;
-}
-.text-field__cmnd:hover .sidebar__item-tool-tip{
-    display:flex;
-}
-.sidebar__item-tool-tip {
-    position: absolute;
-    /* left: calc(100% + 8px); */
-    /* width: 94px; */
-    padding: 0 12px;
-    height: 40px;
-    background-color: var(--sidebar-color);
-    top: 150%;
-    transform: translateY(-50%);
-    bottom: 0;
-    white-space: nowrap;
-    display: none;
-    justify-content: center;
+.table__function-reload {
+    display: flex;
     align-items: center;
-    border-radius: 4px;
-    opacity: 94%;
-    color: #ffffff;
-    text-align: center;
-    z-index: 1000001;
+}
+.table-function-reload--icon {
+    width: fit-content;
+    padding: 0 8px;
+}
+.table-function-reload-background {
+    width: 24px;
+    height: 24px;
+    background: url(../../assets/images/icon.svg) no-repeat -1097px -90px;
+}
+.main-content__data-table-function {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 8px;
 }
 </style>

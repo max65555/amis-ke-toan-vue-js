@@ -1,98 +1,86 @@
 <template>
     <div class="dropdown-list">
-      <div class="dropdown__input" :class="[{'normal-status':!isOnlyIcon}]">
-          <span
-            class="dropdown__input-text" v-if="!isOnlyIcon"
-            >{{ placeholder}}
-          </span>
-          <button
-            class="dropdown__input-icon"
-            @click="showDropdownList"
-            >
-            <i
-                class="icofont-rounded-down dropdown__i--icon"
-                ></i>
-          </button>
-      </div>
-      <div
-          class="dropdown-list__list"
-          v-show="isDropdownListShow"
-          >
-          <button
-            class="dropdown-list__list-item"
-            v-for="(listItem,key) in item"
-            :key="key"
-            @click="clickHandler(listItem.function)"
-            >
-            <span
-                class="dropdown-list__list-item-text"
-                >
-            {{ listItem.mean }}
+        <div
+            class="dropdown__input"
+            :class="[{ 'normal-status': !isOnlyIcon }]"
+        >
+            <span class="dropdown__input-text" v-if="!isOnlyIcon"
+                >{{ placeholder }}
             </span>
-          </button>
-      </div>
-  </div>
+            <button class="dropdown__input-icon" @click="showDropdownList">
+                <i class="icofont-rounded-down dropdown__i--icon"></i>
+            </button>
+        </div>
+        <div class="dropdown-list__list" v-show="isDropdownListShow">
+            <button
+                class="dropdown-list__list-item"
+                v-for="(listItem, key) in item"
+                :key="key"
+                @click="clickHandler(listItem.function)"
+            >
+                <span class="dropdown-list__list-item-text">
+                    {{ listItem.mean }}
+                </span>
+            </button>
+        </div>
+    </div>
 </template>
 
 <script>
 export default {
-  name: "DropdownList",
-  props: {
-    isOnlyIcon:{
-      type: Boolean,
-      default:false,
-      required: true
+    name: 'DropdownList',
+    props: {
+        isOnlyIcon: {
+            type: Boolean,
+            default: false,
+            required: true,
+        },
+        item: {
+            type: Array,
+            default: () => [],
+            required: true,
+        },
+        placeholder: {
+            type: String,
+            default: '',
+            required: false,
+        },
     },
-    item: {
-      type: Array,
-      default: ()=>[],
-      required:true
+    data() {
+        return {
+            isDropdownListShow: false,
+        }
     },
-    placeholder: {
-      type: String,
-      default: '',
-      required:false,
-    }
-  },
-  data() {
-    return {
-      isDropdownListShow:false,
-    }
-  },
-  methods: {
-    /**
-     * show dropdownlist item by pressing button
-     * Author:1/1/2023
-     */
-    showDropdownList() {
-      this.isDropdownListShow = !this.isDropdownListShow;
+    methods: {
+        /**
+         * show dropdownlist item by pressing button
+         * Author:1/1/2023
+         */
+        showDropdownList() {
+            this.isDropdownListShow = !this.isDropdownListShow
+        },
+        /**
+         * click to one of items handler
+         * Author:1/1/2023
+         */
+        clickHandler(functionName) {
+            this.$emit(functionName)
+        },
     },
-    /**
-     * click to one of items handler
-     * Author:1/1/2023
-     */
-    clickHandler(functionName) {
-      this.$emit(functionName);
-    }
-    
-  },
-  watch: {
-    isDropdownListShow() {
-      console.log("changed dropdown value "  + this.isDropdownListShow);
-      this.$emit("watchIsDropdownListValue", this.isDropdownListShow);
-      this.$emit("watchId",this.isDropdownListShow);
-    }
-  }
+    watch: {
+        isDropdownListShow() {
+            this.$emit('watchIsDropdownListValue', this.isDropdownListShow)
+            this.$emit('watchId', this.isDropdownListShow)
+        },
+    },
 }
-  
 </script>
 
 <style scoped>
-
 .dropdown-list {
-    width:fit-content;
+    width: fit-content;
     position: relative;
-    z-index:1;
+    z-index: 1;
 }
 .dropdown__label {
     display: block;
@@ -130,9 +118,9 @@ export default {
     text-align: left;
 }
 .dropdown__input-icon {
-  border-radius: 4px;
+    border-radius: 4px;
     display: flex;
-    width:auto;
+    width: auto;
     height: 100%;
     justify-content: center;
     align-items: center;
@@ -169,13 +157,13 @@ export default {
 }
 /* dropdown-list the List */
 .dropdown-list__list {
-    z-index:10000;
+    z-index: 10000;
     overflow-y: overlay;
     overflow-x: hidden;
     white-space: nowrap;
     position: absolute;
     top: 36;
-    right:0;
+    right: 0;
     min-width: 100%;
     max-height: 200px;
     border-radius: 4px;
@@ -184,8 +172,8 @@ export default {
 }
 .dropdown-list__list-item {
     height: 36px;
-    width:-webkit-fill-available;
-    flex:1;
+    width: -webkit-fill-available;
+    flex: 1;
     display: flex;
     align-items: center;
     margin: 8px;

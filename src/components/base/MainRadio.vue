@@ -7,7 +7,7 @@
         </div>
         <div
             class="radio__input"
-            :style="{ padding: isContainLabel ? '16px' : '0' }"
+            :style="{ padding: isContainLabel ? '8px' : '0' }"
         >
             <div
                 class="radio__item"
@@ -27,7 +27,7 @@
         </div>
     </div>
 </template>
-
+Tải khoản ngân hàng Tên ngân hàng Chi nhánh
 <script>
 export default {
     name: 'MainRadio',
@@ -66,7 +66,7 @@ export default {
     width: fit-content;
 }
 .radio__input {
-    padding-top: 16px;
+    padding-top: 8px;
     display: flex;
     align-items: center;
     width: fit-content;

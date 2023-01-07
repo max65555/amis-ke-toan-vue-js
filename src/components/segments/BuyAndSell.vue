@@ -3,7 +3,13 @@
         <add-new-employee
             :isUpdate="true"
             :EmployeeBeUpdated="{}"
+            v-if="true"
         ></add-new-employee>
+        <popup-notify
+            v-if="false"
+            typeNotify="success"
+            notifyMessage="test"
+        ></popup-notify>
     </div>
 </template>
 <script>

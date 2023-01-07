@@ -150,7 +150,7 @@ export default {
 .text-field__input {
     box-sizing: border-box;
     width: 100%;
-    padding-left: 12px;
+    padding: 4px 0 4px 12px;
     font-size: 14px;
     border: none;
     outline: unset;

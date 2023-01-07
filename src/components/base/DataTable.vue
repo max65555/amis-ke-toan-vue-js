@@ -69,7 +69,11 @@
                                             : '1px solid #e0e0e0',
                                 }"
                             >
-                                {{ anRow[item] }}
+                                {{
+                                    item == 'DateOfBirth'
+                                        ? formatDate(anRow[item])
+                                        : anRow[item]
+                                }}
                             </div>
                         </td>
                         <td
@@ -88,13 +92,20 @@
                             >
                                 <link-button
                                     label="Sửa"
-                                    @click-handler="UpdateAnRow(anRow[IDField])"
+                                    @click-handler="
+                                        this.$emit('update-row', anRow[IDField])
+                                    "
                                 ></link-button>
                                 <div class="data-table__button-dropdown-edit">
                                     <dropdown-list
                                         :isOnlyIcon="true"
                                         :item="functionButtonList"
-                                        @deleteRow="DeleteAnRow(anRow[IDField])"
+                                        @deleteRow="
+                                            this.$emit(
+                                                'delete-row',
+                                                anRow[IDField]
+                                            )
+                                        "
                                         @watchIsDropdownListValue="
                                             getDropdownList
                                         "
@@ -161,13 +172,6 @@ export default {
         DeleteAnRow(fieldID) {
             console.log('delete ' + fieldID)
         },
-        /**
-         * update an record by id
-         * Author: toanlk (2/1/2023)
-         */
-        UpdateAnRow(fieldID) {
-            console.log('update' + fieldID)
-        },
         getDropdownList(isDropdownListShow) {
             this.isDropdownListShow = isDropdownListShow
             console.log(this.isDropdownListShow)
@@ -175,6 +179,22 @@ export default {
         getIdCurrentRowByOpenDropDown(currentID) {
             this.currentIDOpenDropDownList = currentID
             console.log(this.currentIDOpenDropDownList)
+        },
+        /**
+         * date Formatter
+         * Author: toanlk(25/12/2022)
+         * @param {*} date
+         */
+        formatDate(date) {
+            try {
+                let formatedDate = date.slice(0, 10)
+                let year = formatedDate.slice(0, 4)
+                let mouth = formatedDate.slice(5, 7)
+                let day = formatedDate.slice(8, 10)
+                return day + '/' + mouth + '/' + year
+            } catch (e) {
+                console.log(e)
+            }
         },
     },
 }
@@ -301,7 +321,7 @@ th {
 }
 .data-table__check-all-box {
     background-color: #f5f5f5 !important;
-    z-index: 10001 !important;
+    z-index: 101 !important;
 }
 .data-table__button-dropdown-edit {
     position: relative;
@@ -373,7 +393,7 @@ th {
 }
 .data-table__header--checkbox {
     background-color: #f5f5f5;
-    z-index: 10000;
+    z-index: 100;
     position: sticky;
     left: 0;
     top: 0;
