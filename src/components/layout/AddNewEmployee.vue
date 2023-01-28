@@ -336,7 +336,7 @@ export default {
             try {
                 axios
                     .post(
-                        'https://amis.manhnv.net/api/v1/Employees',
+                        'https://localhost:7062/api/v1/Employees',
                         this.EmployeeBeUpdated
                     )
                     .then((res) => {
